@@ -1,0 +1,45 @@
+{
+    "devices": [
+        {
+            "id": "device_001",
+            "name": "主测试设备",
+            "type": "android",
+            "model": "Pixel 6",
+            "platform": "Android 13",
+            "screenSize": "1080x2400",
+            "enabled": true,
+            "description": "用于主要测试的Android设备"
+        },
+        {
+            "id": "device_002",
+            "name": "备用测试设备",
+            "type": "android",
+            "model": "Samsung S21",
+            "platform": "Android 12",
+            "screenSize": "1080x2400",
+            "enabled": false,
+            "description": "备用Android测试设备"
+        },
+        {
+            "id": "simulator_001",
+            "name": "Android模拟器",
+            "type": "emulator",
+            "model": "Pixel 4",
+            "platform": "Android 11",
+            "screenSize": "1080x1920",
+            "enabled": true,
+            "description": "本地Android模拟器"
+        }
+    ],
+    "defaultDevice": "device_001",
+    "connection": {
+        "timeout": 30000,
+        "retryCount": 3,
+        "retryInterval": 5000
+    },
+    "capabilities": {
+        "autoGrantPermissions": true,
+        "noReset": true,
+        "newCommandTimeout": 300
+    }
+}

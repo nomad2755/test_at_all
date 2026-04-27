@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# editors
+.idea/
+.vscode/
+
+# logs
+*.log
+
+# temp
+tmp/
+temp/
+
+.agents/
+skills-lock.json
+
+# credentials
+**/cred.json
+.noiz_api_key
+
+__pycache__/

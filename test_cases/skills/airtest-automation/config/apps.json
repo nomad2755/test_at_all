@@ -1,0 +1,34 @@
+{
+    "apps": [
+        {
+            "id": "app_001",
+            "name": "测试应用A",
+            "packageName": "com.example.appa",
+            "mainActivity": ".MainActivity",
+            "version": "1.0.0",
+            "apkPath": "/path/to/appa.apk",
+            "enabled": true,
+            "description": "主要测试应用"
+        },
+        {
+            "id": "app_002",
+            "name": "测试应用B",
+            "packageName": "com.example.appb",
+            "mainActivity": ".ui.MainActivity",
+            "version": "2.0.0",
+            "apkPath": "/path/to/appb.apk",
+            "enabled": true,
+            "description": "次要测试应用"
+        }
+    ],
+    "defaultApp": "app_001",
+    "installOptions": {
+        "allowDowngrade": true,
+        "grantPermissions": true,
+        "replace": true
+    },
+    "launchOptions": {
+        "waitForLaunch": true,
+        "launchTimeout": 30000
+    }
+}

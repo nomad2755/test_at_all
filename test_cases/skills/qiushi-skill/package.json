@@ -1,0 +1,14 @@
+{
+  "name": "qiushi-skill",
+  "version": "1.2.0",
+  "description": "以教员思想武装 AI Agent 大脑的方法论 Skills 合集",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "validate": "bash tests/validate.sh",
+    "validate:win": "powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File tests/validate.ps1",
+    "test": "bash tests/validate.sh",
+    "test:win": "powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -File tests/validate.ps1",
+    "verify:install": "bash tests/validate.sh"
+  }
+}
