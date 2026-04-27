@@ -142,6 +142,43 @@ POST /api.php/v1/projects/{项目ID}/executions
 - **内测邀请页面测试用例**: 15 个用例 (P0/P1/P2)
 - **测试流程规范文档**: `docs/测试工作流程标准规范_AI辅助版.md`
 
+## 已安装 Skills 清单
+
+### 测试相关技能 (工作区)
+| 技能名 | 描述 |
+|--------|------|
+| zentao-integration | 禅道 API 集成 |
+| create-xmind | XMind 生成 |
+| extract-prototype-testcase | 原型提取测试用例 |
+| airtest-automation | AirTest 自动化测试 |
+| webapp-testing | Web 应用测试 |
+
+### 工具类技能 (工作区)
+| 技能名 | 描述 |
+|--------|------|
+| create-zen-dao | 创建禅道文档 |
+| flybirds | 飞鸟测试框架 |
+| video-translation | 视频翻译 |
+| tts | TTS 语音合成 |
+| characteristic-voice | 声音特征 |
+| daily-news-caster | 每日新闻 |
+| thinking-knowledge-system | 知识系统 |
+
+### 系统内置技能 (54个)
+| 分类 | 技能 |
+|------|------|
+| AI/编码 | coding-agent, gemini |
+| 天气/时间 | weather |
+| 提醒/日历 | apple-reminders, things-mac |
+| 笔记/文档 | apple-notes, bear-notes, notion, obsidian |
+| 消息/社交 | imsg, slack, discord, wacli |
+| 音乐/媒体 | spotify-player, songsee, openai-whisper |
+| 智能家居 | openhue, eightctl |
+| 开发工具 | github, gh-issues, trello |
+| 其他 | clawhub, skill-creator, tmux, healthcheck, summarize |
+
+---
+
 ## 待跟进
 - [ ] 确认 MiniMax API Key 是否已配置
 - [ ] 了解工程师当前测试项目
