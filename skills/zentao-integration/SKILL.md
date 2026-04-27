@@ -1,224 +1,155 @@
----
-name: zentao-integration
-description: ZenTao bug tracking API integration. Query, create and update bugs, get statistics.
-license: MIT
----
+# ZenTao Integration Skill
 
-# ZenTao Bug 跟踪集成
+ZenTao 禅道集成技能 - 用于管理需求、测试用例、Bug等。
 
-## 概述
+## 功能
 
-通过 API 与禅道 (ZenTao) 系统集成，实现 Bug 的查询、创建、更新和统计分析。
+- ✅ 创建需求文档（Story）及子需求
+- ✅ 创建测试用例并关联到需求
+- ✅ 批量导入测试用例
+- ✅ 创建测试用例模块
+- ✅ 查询和验证数据
 
-## 服务器信息
+## 重要发现（经验总结）
 
-| 项目 | 值 |
-|------|-----|
-| 服务器 | http://192.168.0.28:9980 |
-| 产品 | 数字乡村 v1.1 (ID: 1) |
-| 迭代 | 邀请码专项 (ID: 24) |
+### 1. 测试用例关联需求
 
-## 认证
+**关键发现**: 使用 `parent` 字段关联测试用例到需求，而不是 `story` 字段！
 
 ```python
-import requests
+# ❌ 错误方式 - story字段不生效
+data = {"title": "用例标题", "story": 需求ID}
 
-base_url = "http://192.168.0.28:9980"
-api_url = f"{base_url}/api.php/v1"
-
-# 登录获取 token
-def login(account, password):
-    response = requests.post(f"{api_url}/tokens", json={
-        "account": account,
-        "password": password
-    })
-    return response.json()["token"]
-
-token = login("shidawei", "shidawei")
+# ✅ 正确方式 - 使用parent字段
+data = {"title": "用例标题", "parent": 需求ID}
 ```
 
-## API 操作
+### 2. Steps 字段格式
 
-### 1. 查询 Bug 列表
-
-```bash
-# 产品所有 Bug
-curl "http://192.168.0.28:9980/api.php/v1/products/1/bugs" \
-  -H "Token: 335bfce2adddecff7b3097534e93cf3e"
-
-# 带分页
-curl "http://192.168.0.28:9980/api.php/v1/products/1/bugs?limit=20&page=1" \
-  -H "Token: xxx"
-```
+**关键发现**: `steps` 必须传 JSON 数组，不能是字符串！
 
 ```python
-def get_product_bugs(product_id=1, limit=20, page=1):
-    url = f"{api_url}/products/{product_id}/bugs"
-    params = {"limit": limit, "page": page}
-    headers = {"Token": token}
-    response = requests.get(url, headers=headers, params=params)
-    return response.json()
+# ❌ 错误方式 - 字符串格式
+data = {"steps": "[{\"desc\":\"步骤\",\"expect\":\"预期\"}]"}
+
+# ✅ 正确方式 - 数组格式
+data = {"steps": [{"desc": "步骤", "expect": "预期"}]}
 ```
 
-### 2. 查询指定 Bug
+### 3. 创建时的产品ID问题
 
-```bash
-curl "http://192.168.0.28:9980/api.php/v1/bugs/9727" \
-  -H "Token: xxx"
+- 产品1创建的需求/测试用例可能在UI上显示不正常
+- 建议使用产品2创建测试用例
+- 创建后验证 `product` 字段
+
+### 4. HTTP 502 处理
+
+批量导入时偶发502错误，需要重试机制。
+
+## API 端点
+
+### 基础配置
+- **Base URL**: `http://192.168.0.28:9980/api.php/v1`
+- **Token**: `335bfce2adddecff7b3097534e93cf3e`（可能过期，需重新认证）
+- **认证方式**: `POST /tokens` with `{"account":"shidawei","password":"shidawei"}`
+
+### 需求(Stories)
+```
+GET    /products/{productID}/stories          # 获取需求列表
+POST   /products/{productID}/stories           # 创建需求
+PUT    /stories/{storyID}                     # 更新需求
 ```
 
-```python
-def get_bug(bug_id):
-    url = f"{api_url}/bugs/{bug_id}"
-    headers = {"Token": token}
-    response = requests.get(url, headers=headers)
-    return response.json()
+### 测试用例
+```
+GET    /products/{productID}/testcases        # 获取测试用例（可能有分页问题）
+POST   /products/{productID}/testcases         # 创建测试用例
+GET    /testcases/{id}                         # 获取单个测试用例
+PUT    /testcases/{id}                         # 更新测试用例
 ```
 
-### 3. 创建 Bug
-
-```bash
-curl -X POST "http://192.168.0.28:9980/api.php/v1/products/1/bugs" \
-  -H "Content-Type: application/json" \
-  -H "Token: xxx" \
-  -d '{
-    "title": "Bug 标题",
-    "severity": 3,
-    "pri": 2,
-    "type": "codeerror",
-    "steps": "<p>重现步骤</p>",
-    "openedBuild": ["trunk"]
-  }'
+### 测试用例模块
+```
+GET    /products/{productID}/testcase-modules  # 获取模块列表
+POST   /products/{productID}/testcase-modules  # 创建模块
 ```
 
-```python
-def create_bug(product_id, bug_data):
-    url = f"{api_url}/products/{product_id}/bugs"
-    headers = {
-        "Token": token,
-        "Content-Type": "application/json"
-    }
-    response = requests.post(url, headers=headers, json=bug_data)
-    return response.json()
+### 迭代/执行
 ```
-
-### 4. 更新 Bug
-
-```python
-def update_bug(bug_id, update_data):
-    url = f"{api_url}/bugs/{bug_id}"
-    headers = {
-        "Token": token,
-        "Content-Type": "application/json"
-    }
-    response = requests.put(url, headers=headers, json=update_data)
-    return response.json()
-
-# 添加分析内容
-update_bug(9727, {
-    "steps": "<p>【问题描述】</p><p>xxx</p><p>【可能原因】</p><p>1. xxx</p>"
-})
+GET    /projects/{projectID}/executions        # 获取迭代列表
+POST   /projects/{projectID}/executions        # 创建迭代
 ```
-
-### 5. 查询迭代 Bug
-
-```bash
-curl "http://192.168.0.28:9980/api.php/v1/executions/24/bugs" \
-  -H "Token: xxx"
-```
-
-### 6. 获取产品/执行列表
-
-```bash
-# 产品列表
-curl "http://192.168.0.28:9980/api.php/v1/products" -H "Token: xxx"
-
-# 迭代列表
-curl "http://192.168.0.28:9980/api.php/v1/executions" -H "Token: xxx"
-```
-
-## 字段说明
-
-### Bug 字段
-
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| title | string | Bug 标题 (必填) |
-| severity | int | 严重程度 1-4 (P0-P3) |
-| pri | int | 优先级 1-4 |
-| type | string | Bug 类型: codeerror, config, install... |
-| steps | string | 重现步骤 (HTML 格式) |
-| openedBuild | array | 版本 Build |
-| assignedTo | string | 指派人 |
-| module | int | 模块 ID |
-
-### Severity 严重程度
-
-| 值 | 级别 | 说明 |
-|----|------|------|
-| 1 | P0 | 阻断 - 功能完全不可用 |
-| 2 | P1 | 严重 - 核心功能异常 |
-| 3 | P2 | 一般 - 非核心功能问题 |
-| 4 | P3 | 轻微 - 不影响使用 |
-
-### Bug 状态
-
-| 状态 | 说明 |
-|------|------|
-| active | 激活 |
-| resolved | 已解决 |
-| closed | 已关闭 |
 
 ## 使用示例
 
-### 示例 1: 创建 Bug
+### 1. 创建需求
 
 ```python
-bug_data = {
-    "title": "【邀请码】页面无法正常打开",
-    "severity": 3,
-    "pri": 2,
-    "type": "codeerror",
-    "steps": "<p>【步骤】</p><p>1. 打开链接</p><p>【结果】页面空白</p>",
-    "openedBuild": ["trunk"]
+# 创建主需求
+data = {
+    "title": "【内测邀请码管理系统】用户端邀请码申请与管理功能",
+    "type": "story",
+    "pri": 1,
+    "product": 1,
+    "status": "draft"
 }
-result = create_bug(1, bug_data)
-print(f"Bug ID: {result['id']}")
+story = api_post("products/1/stories", data)
+# 返回: {"id": 4, ...}
+
+# 创建子需求
+data = {
+    "title": "【邀请码登录】邀请码登录功能",
+    "type": "story",
+    "parent": 4,  # 关联主需求
+    "product": 1
+}
+sub_story = api_post("products/1/stories", data)
+# 返回: {"id": 5, ...}
 ```
 
-### 示例 2: 添加分析到已有 Bug
+### 2. 创建测试用例（关联需求）
 
 ```python
-analysis = """
-<p>【问题描述】</p>
-<p>申请的界面可以使用登录的短信验证码</p>
-<p>【可能原因】</p>
-<p>1. 验证逻辑混用</p>
-<p>2. 权限打通</p>
-<p>【建议检查点】</p>
-<p>1. 检查后端逻辑</p>
-"""
-
-update_bug(9727, {"steps": analysis})
+data = {
+    "title": "【TC-LOGIN-001】正常邀请码登录流程",
+    "pri": 1,
+    "type": "feature",
+    "parent": 5,  # ✅ 关联到需求ID 5
+    "steps": [
+        {"desc": "用户打开登录页面", "expect": "显示登录表单"},
+        {"desc": "输入有效的邀请码", "expect": "邀请码被接受"},
+        {"desc": "点击登录按钮", "expect": "登录成功"}
+    ]
+}
+tc = api_post("products/2/testcases", data)
 ```
 
-### 示例 3: 统计 Bug 状态
+### 3. 批量导入测试用例
 
-```python
-def get_bug_stats(product_id=1):
-    bugs = get_product_bugs(product_id, limit=100)["bugs"]
-    stats = {"active": 0, "resolved": 0, "closed": 0}
-    for b in bugs:
-        stats[b["status"]] = stats.get(b["status"], 0) + 1
-    return stats
+```bash
+python3 scripts/batch_import_cases.py
 ```
 
-## 触发关键词
+## 已知问题
 
-- "禅道"
-- "ZenTao"
-- "查询 Bug"
-- "创建 Bug"
-- "更新 Bug"
-- "Bug 统计"
-- "添加分析"
+1. **测试用例 steps 字段 bug**: 通过某些endpoint创建的用例，steps可能为空
+2. **产品ID混淆**: API有时会将用例创建到错误的产品
+3. **HTTP 502**: 批量操作时偶发，需要重试
+
+## 文件结构
+
+```
+zentao-integration/
+├── SKILL.md                      # 本文件
+├── scripts/
+│   ├── create_stories.py         # 创建需求脚本
+│   ├── create_testcases.py      # 创建测试用例脚本
+│   ├── batch_import_cases.py    # 批量导入测试用例
+│   └── zentao_api.py            # API基础类
+└── README.md
+```
+
+## 安全注意
+
+- Token 包含敏感信息，不要在日志中输出完整Token
+- 定期检查Token是否过期
