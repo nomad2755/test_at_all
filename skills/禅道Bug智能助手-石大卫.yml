@@ -1,0 +1,3373 @@
+app:
+  description: 使用AI-AGENT来快速查询Bug和创建Bug，提升质量管理效率。
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 禅道Bug智能助手-石大卫
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.12@37699cc3d1ea9e006348a7273a514f3ddf60ffb0649dc735c594c8da6a80934b
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: lzfxxx/image-downloader:0.0.1@ed870936bc915d620df8cbcdecf992cb22e5790bfddc73fe828d7db711bcc074
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 10240
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: parameter-extractor
+      id: 1762409434863-source-1762409582978-target
+      selected: false
+      source: '1762409434863'
+      sourceHandle: source
+      target: '1762409582978'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1762409891942-1-1762412603962-target
+      selected: false
+      source: '1762409891942'
+      sourceHandle: '1'
+      target: '1762412603962'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: question-classifier
+      id: 1762409582978-source-1762409891942-target
+      selected: false
+      source: '1762409582978'
+      sourceHandle: source
+      target: '1762409891942'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1763531311103-source-1763531411473-target
+      selected: false
+      source: '1763531311103'
+      sourceHandle: source
+      target: '1763531411473'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: parameter-extractor
+      id: 1762412603962-source-1763532028314-target
+      selected: false
+      source: '1762412603962'
+      sourceHandle: source
+      target: '1763532028314'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: iteration
+      id: 1763532028314-source-1763536661442-target
+      selected: false
+      source: '1763532028314'
+      sourceHandle: source
+      target: '1763536661442'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: iteration
+        targetType: llm
+      id: 1763536661442-source-1763531311103-target
+      selected: false
+      source: '1763536661442'
+      sourceHandle: source
+      target: '1763531311103'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763536661442'
+        sourceType: iteration-start
+        targetType: http-request
+      id: 1763536661442start-source-1763536673955-target
+      selected: false
+      source: 1763536661442start
+      sourceHandle: source
+      target: '1763536673955'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763536661442'
+        sourceType: http-request
+        targetType: code
+      id: 1763536673955-source-1763691470260-target
+      selected: false
+      source: '1763536673955'
+      sourceHandle: source
+      target: '1763691470260'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1762409891942-2-17636923671830-target
+      selected: false
+      source: '1762409891942'
+      sourceHandle: '2'
+      target: '17636923671830'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: parameter-extractor
+      id: 17636923671830-source-17636924089900-target
+      selected: false
+      source: '17636923671830'
+      sourceHandle: source
+      target: '17636924089900'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763536661442'
+        sourceType: iteration-start
+        targetType: http-request
+      id: 1763692436805start-source-1763692436805017636924368050-target
+      selected: false
+      source: 1763692436805start
+      sourceHandle: source
+      target: '1763692436805017636924368050'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: iteration
+      id: 17636924089900-source-17636924368050-target
+      selected: false
+      source: '17636924089900'
+      sourceHandle: source
+      target: '17636924368050'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: iteration
+        targetType: llm
+      id: 17636924368050-source-1763694116058-target
+      selected: false
+      source: '17636924368050'
+      sourceHandle: source
+      target: '1763694116058'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: parameter-extractor
+      id: 1763694116058-source-1763694815532-target
+      selected: false
+      source: '1763694116058'
+      sourceHandle: source
+      target: '1763694815532'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763696347262'
+        sourceType: iteration-start
+        targetType: http-request
+      id: 1763696347262start-source-1763948284402-target
+      selected: false
+      source: 1763696347262start
+      sourceHandle: source
+      target: '1763948284402'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763696347262'
+        sourceType: http-request
+        targetType: llm
+      id: 1763948284402-source-1763952741375-target
+      selected: false
+      source: '1763948284402'
+      sourceHandle: source
+      target: '1763952741375'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763696347262'
+        sourceType: llm
+        targetType: code
+      id: 1763952741375-source-1763952830487-target
+      selected: false
+      source: '1763952741375'
+      sourceHandle: source
+      target: '1763952830487'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: iteration
+        targetType: llm
+      id: 1763696347262-source-1762411399891-target
+      selected: false
+      source: '1763696347262'
+      sourceHandle: source
+      target: '1762411399891'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1762411399891-source-1762411471115-target
+      selected: false
+      source: '1762411399891'
+      sourceHandle: source
+      target: '1762411471115'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: iteration
+      id: 1763955481256-2-1763696347262-target
+      selected: false
+      source: '1763955481256'
+      sourceHandle: '2'
+      target: '1763696347262'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '17636924368050'
+        sourceType: http-request
+        targetType: parameter-extractor
+      id: 1763692436805017636924368050-source-1763692655529-target
+      selected: false
+      source: '1763692436805017636924368050'
+      sourceHandle: source
+      target: '1763692655529'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '17636924368050'
+        sourceType: parameter-extractor
+        targetType: code
+      id: 1763692655529-source-1763692436805017636924368051-target
+      selected: false
+      source: '1763692655529'
+      sourceHandle: source
+      target: '1763692436805017636924368051'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: question-classifier
+      id: 1763694815532-source-1763955481256-target
+      selected: false
+      source: '1763694815532'
+      sourceHandle: source
+      target: '1763955481256'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: parameter-extractor
+      id: 17652672415750-source-17652672544560-target
+      selected: false
+      source: '17652672415750'
+      sourceHandle: source
+      target: '17652672544560'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763536661442'
+        sourceType: iteration-start
+        targetType: http-request
+      id: 1765267264511start-source-1765267264511017652672645110-target
+      selected: false
+      source: 1765267264511start
+      sourceHandle: source
+      target: '1765267264511017652672645110'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763536661442'
+        sourceType: http-request
+        targetType: code
+      id: 1765267264511017652672645110-source-1765267264511017652672645111-target
+      selected: false
+      source: '1765267264511017652672645110'
+      sourceHandle: source
+      target: '1765267264511017652672645111'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: iteration
+      id: 17652672544560-source-17652672645110-target
+      selected: false
+      source: '17652672544560'
+      sourceHandle: source
+      target: '17652672645110'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: iteration
+        targetType: llm
+      id: 17652672645110-source-17652672853700-target
+      selected: false
+      source: '17652672645110'
+      sourceHandle: source
+      target: '17652672853700'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1763955481256-1-17652672415750-target
+      selected: false
+      source: '1763955481256'
+      sourceHandle: '1'
+      target: '17652672415750'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 17652672853700-source-1763955574399-target
+      selected: false
+      source: '17652672853700'
+      sourceHandle: source
+      target: '1763955574399'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1763955574399-source-1763955642383-target
+      selected: false
+      source: '1763955574399'
+      sourceHandle: source
+      target: '1763955642383'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1762335518210-source-1765330178873-target
+      selected: false
+      source: '1762335518210'
+      sourceHandle: source
+      target: '1765330178873'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1765330178873-2-1762409434863-target
+      selected: false
+      source: '1765330178873'
+      sourceHandle: '2'
+      target: '1762409434863'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1765330178873-1-1765330261808-target
+      selected: false
+      source: '1765330178873'
+      sourceHandle: '1'
+      target: '1765330261808'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1765330261808-source-1765330350296-target
+      selected: false
+      source: '1765330261808'
+      sourceHandle: source
+      target: '1765330350296'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: http-request
+      id: 1765330178873-1765441376581-17654413998430-target
+      selected: false
+      source: '1765330178873'
+      sourceHandle: '1765441376581'
+      target: '17654413998430'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: parameter-extractor
+      id: 17654413998430-source-17654430768190-target
+      selected: false
+      source: '17654413998430'
+      sourceHandle: source
+      target: '17654430768190'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: parameter-extractor
+      id: 17654430768190-source-1765441837796-target
+      selected: false
+      source: '17654430768190'
+      sourceHandle: source
+      target: '1765441837796'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: http-request
+      id: 17654426267230-source-17657824225130-target
+      selected: false
+      source: '17654426267230'
+      sourceHandle: source
+      target: '17657824225130'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: parameter-extractor
+      id: 17657824225130-source-1765782472291-target
+      selected: false
+      source: '17657824225130'
+      sourceHandle: source
+      target: '1765782472291'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: end
+      id: 1765441433670-source-1765443638517-target
+      selected: false
+      source: '1765441433670'
+      sourceHandle: source
+      target: '1765443638517'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: end
+      id: 1765782659096-source-1765443648643-target
+      selected: false
+      source: '1765782659096'
+      sourceHandle: source
+      target: '1765443648643'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: code
+      id: 1765782472291-source-1765783155283-target
+      source: '1765782472291'
+      sourceHandle: source
+      target: '1765783155283'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1765783155283-source-1765782659096-target
+      source: '1765783155283'
+      sourceHandle: source
+      target: '1765782659096'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: if-else
+        targetType: http-request
+      id: 1765442583340-true-1766107948192-target
+      source: '1765442583340'
+      sourceHandle: 'true'
+      target: '1766107948192'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1766107948192-source-1766108042240-target
+      source: '1766107948192'
+      sourceHandle: source
+      target: '1766108042240'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: http-request
+      id: 1766108042240-source-17654426267230-target
+      source: '1766108042240'
+      sourceHandle: source
+      target: '17654426267230'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: parameter-extractor
+        targetType: code
+      id: 1765441837796-source-1767596923283-target
+      source: '1765441837796'
+      sourceHandle: source
+      target: '1767596923283'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: tool
+      id: 1767596923283-source-1767603044212-target
+      source: '1767596923283'
+      sourceHandle: source
+      target: '1767603044212'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: if-else
+      id: 1767603386292-source-1765442583340-target
+      source: '1767603386292'
+      sourceHandle: source
+      target: '1765442583340'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: if-else
+        targetType: http-request
+      id: 1765442583340-false-1765441433670-target
+      source: '1765442583340'
+      sourceHandle: 'false'
+      target: '1765441433670'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: code
+      id: 1767603044212-source-1767603386292-target
+      source: '1767603044212'
+      sourceHandle: source
+      target: '1767603386292'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: text
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: text
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          allowed_file_upload_methods:
+          - remote_url
+          hide: true
+          label: url
+          max_length: 48
+          options: []
+          required: false
+          type: file
+          variable: fileurl
+      height: 116
+      id: '1762335518210'
+      position:
+        x: -744.6444233620806
+        y: 582.3916303704899
+      positionAbsolute:
+        x: -744.6444233620806
+        y: 582.3916303704899
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-61
+            key: ''
+            type: text
+            value: '{"account": "shidawei", "password": "shidawei"}'
+          type: json
+        desc: ''
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 进行登录获取token
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/tokens
+        variables: []
+      height: 140
+      id: '1762409434863'
+      position:
+        x: 213.7378014065916
+        y: 346.5992320257292
+      positionAbsolute:
+        x: 213.7378014065916
+        y: 346.5992320257292
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 令牌
+          name: token
+          required: false
+          type: string
+        query:
+        - '1762409434863'
+        - body
+        reasoning_mode: prompt
+        selected: false
+        title: 提取token
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1762409582978'
+      position:
+        x: 544.361698692244
+        y: 346.5992320257292
+      positionAbsolute:
+        x: 544.361698692244
+        y: 346.5992320257292
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: 查询项目
+        - id: '2'
+          name: 查询Bug
+        desc: ''
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        query_variable_selector:
+        - '1762335518210'
+        - text
+        selected: false
+        title: 问题分类器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 172
+      id: '1762409891942'
+      position:
+        x: 885.3693868548564
+        y: 346.5992320257292
+      positionAbsolute:
+        x: 885.3693868548564
+        y: 346.5992320257292
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1763696347262'
+          - output
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: e7d2f8cb-b678-4804-afcb-45d3ef3bf186
+          role: system
+          text: '```xml
+
+            <instruction>
+
+            请按照以下步骤输出目前的Bug情况：
+
+            1. 首先分析提供的Bug数据，包括Bug编号、标题、状态、严重程度、优先级、创建时间、指派人和项目模块等信息
+
+            2. 按照Bug状态进行分类统计，包括：未解决、待处理、处理中、待测试、已关闭、已拒绝等状态
+
+            3. 按照严重程度统计Bug数量，包括：致命、严重、一般、轻微等级别
+
+            4. 按照优先级统计Bug分布，包括：紧急、高、中、低等级别
+
+            5. 识别出需要紧急关注的高优先级和高严重程度的Bug
+
+            6. 统计每个模块或项目的Bug数量，找出问题集中的区域
+
+            7. 分析Bug的趋势，如新增Bug数量、关闭Bug数量等
+
+            8. 整理出关键数据点，包括：Bug总数、未解决Bug数、已解决Bug数、解决率等
+
+            9. 用清晰简洁的语言描述当前Bug整体情况，突出重要问题和风险点
+
+            10. 避免使用技术术语，确保报告易于理解
+
+            11.统计出目前Bug指派最多的开发
+
+            12.已解决的bug=待验证的bug
+
+            13.未解决Bug高于10个都属于bug多的状态
+
+            {{#1763696347262.output#}}
+
+            输出内容应该包含：
+
+            - 总体概况（Bug总数、状态分布）
+
+            按状态分类统计：
+
+            激活状态（待处理/处理中）：16个（39%）
+
+            待测试状态：25个
+
+            已解决状态：25个（61%）
+
+            - 按严重程度和优先级的分类统计
+
+            - 需要重点关注的问题
+
+            - 主要风险和建议
+
+            - 最后给出结论
+
+            请确保输出内容结构清晰、数据准确、重点突出，并且不使用任何XML标签。
+
+            </instruction>
+
+
+            <examples>
+
+            <example>
+
+            <input>
+
+            Bug列表：
+
+            B001 - 登录页面加载缓慢 - 处理中 - 严重 - 高 - 2024-01-15 - 张三 - 用户模块
+
+            B002 - 支付失败错误 - 待处理 - 致命 - 紧急 - 2024-01-16 - 李四 - 支付模块
+
+            B003 - 界面显示错位 - 已关闭 - 轻微 - 低 - 2024-01-10 - 王五 - 前端模块
+
+            B004 - 数据保存异常 - 处理中 - 严重 - 高 - 2024-01-14 - 赵六 - 数据模块
+
+            B005 - 权限验证失败 - 待测试 - 一般 - 中 - 2024-01-13 - 钱七 - 安全模块
+
+            </input>
+
+            <output>
+
+            目前Bug情况总体概况：
+
+            Bug总数：5个，未解决：3个，已解决：1个，待测试：1个解决率：20%
+
+            XX开发Bug数量最多请优先解决问题或请QC协助
+
+
+            '
+        - id: 7ebc98c9-b88d-4883-a1ff-8a80e221e1a7
+          role: user
+          text: '根据实际查询的/参数提示输出内容应该包含：
+
+            分析Bug情况
+
+            {{#1763696347262.output#}}'
+        selected: false
+        structured_output_enabled: true
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1762411399891'
+      position:
+        x: 2740.145355218978
+        y: 1874.2344245335921
+      positionAbsolute:
+        x: 2740.145355218978
+        y: 1874.2344245335921
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1762411399891'
+          - text
+          value_type: string
+          variable: text
+        selected: false
+        title: 结束
+        type: end
+      height: 90
+      id: '1762411471115'
+      position:
+        x: 2760.145355218978
+        y: 2042.958669889918
+      positionAbsolute:
+        x: 2760.145355218978
+        y: 2042.958669889918
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: token:{{#1762409582978.token#}}
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 获取项目列表
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/programs
+        variables: []
+      height: 140
+      id: '1762412603962'
+      position:
+        x: 1195.3806952982468
+        y: 201.46829254741124
+      positionAbsolute:
+        x: 1195.3806952982468
+        y: 201.46829254741124
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1763536661442'
+          - output
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: ada788cd-70b6-484e-888d-c62e3fabaa41
+          role: system
+          text: '```xml
+
+            <instruction>
+
+            首先，你需要获取禅道系统中所有项目的JSON数据。请按照以下步骤操作：
+
+
+            1. 连接到禅道系统的API接口，使用提供的认证信息（如用户名、密码或API令牌）进行身份验证
+
+            2. 调用获取项目列表的API端点，通常这个端点是类似于"/api/projects"或"/api/project/getList"的URL
+
+            3. 确保请求参数正确设置，包括分页参数（如果需要获取所有项目）
+
+            4. 解析返回的JSON响应，确认数据格式正确且包含完整的项目信息
+
+
+            接下来，分析项目数据并生成报告：
+
+
+            5. 从JSON数据中提取项目的基本信息，包括项目ID、项目名称、项目状态、负责人、开始时间、结束时间等关键字段
+
+            6. 统计项目总数，并按状态分类（如进行中、已关闭、已延期等）
+
+            7. 整理项目列表，确保信息清晰易读
+
+            8. 如果发现异常数据或缺失信息，请在报告中注明
+
+            9.分析目前对应项目有哪些产品
+
+            10.输出每一个项目的迭代情况，所有的都要写
+
+            在生成最终报告时：
+
+            - 使用简洁明了的语言描述项目概况
+
+            - 以列表形式展示各个项目的基本信息
+
+            - 包含项目统计摘要
+
+            - 确保输出格式整洁，便于阅读
+
+            - 输出内容中不得包含任何XML标签
+
+
+            请确保整个过程处理得当，报告内容准确反映禅道系统中项目的当前状况。
+
+            </instruction>
+
+
+            <examples>
+
+            <example>
+
+            <output>
+
+            项目概况报告：
+
+            总计发现15个项目，其中：
+
+            - 进行中项目：8个
+
+            - 已关闭项目：5个
+
+            - 未开始项目：2个
+
+
+            项目列表：
+
+            1. 项目名称：电商平台开发，状态：进行中，负责人：张三，开始时间：2024-01-15
+
+            2. 项目名称：移动APP优化，状态：进行中，负责人：李四，开始时间：2024-02-01
+
+            3. 项目名称：客户管理系统，状态：已关闭，负责人：王五，开始时间：2023-11-10
+
+            4. 项目名称：数据中台建设，状态：进行中，负责人：赵六，开始时间：2024-01-20
+
+            5. 项目名称：官网改版，状态：未开始，负责人：钱七，开始时间：
+
+            数字乡村v1.1项目迭代详情：
+
+            已完成
+
+            1.迭代名称：电商迭代20
+
+            2.
+
+            已关闭
+
+            1.
+
+            2.
+
+            待开始
+
+            1.
+
+            2.
+
+            测试项目迭代详情：
+
+            已完成
+
+            1.迭代名称：电商迭代20
+
+            2.
+
+            已关闭
+
+            1.
+
+            2.
+
+            待开始
+
+            1.
+
+            2.'
+        - id: a7cfe346-d886-4432-a9ab-de5a5262ae55
+          role: user
+          text: '分析目前有哪些产品
+
+            {{#1762412603962.body#}}
+
+            {{#1763536661442.output#}}
+
+            分析项目迭代信息：
+
+            '
+        selected: false
+        title: 整理内容
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1763531311103'
+      position:
+        x: 2826.455645963578
+        y: -231.81939998159368
+      positionAbsolute:
+        x: 2826.455645963578
+        y: -231.81939998159368
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1763531311103'
+          - text
+          value_type: string
+          variable: text
+        selected: false
+        title: 结束 2
+        type: end
+      height: 90
+      id: '1763531411473'
+      position:
+        x: 3270.7521849430136
+        y: -231.81939998159368
+      positionAbsolute:
+        x: 3270.7521849430136
+        y: -231.81939998159368
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: 提取所有的项目ID
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 所有的项目ID提取到这个数组
+          name: id
+          required: true
+          type: array[number]
+        query:
+        - '1762412603962'
+        - body
+        reasoning_mode: prompt
+        selected: false
+        title: 项目ID提取器
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1763532028314'
+      position:
+        x: 1521.3641879159509
+        y: -163.81939998159368
+      positionAbsolute:
+        x: 1521.3641879159509
+        y: -163.81939998159368
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        error_handle_mode: terminated
+        height: 356
+        is_parallel: true
+        iterator_input_type: array[number]
+        iterator_selector:
+        - '1763532028314'
+        - id
+        output_selector:
+        - '1763536673955'
+        - body
+        output_type: array[string]
+        parallel_nums: 4
+        selected: false
+        start_node_id: 1763536661442start
+        title: 迭代
+        type: iteration
+        width: 821.4103149769776
+      height: 356
+      id: '1763536661442'
+      position:
+        x: 1928.4584621372142
+        y: -426.0148624274705
+      positionAbsolute:
+        x: 1928.4584621372142
+        y: -426.0148624274705
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 821
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1763536661442start
+      parentId: '1763536661442'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 1952.4584621372142
+        y: -358.0148624274705
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: token:{{#1762409582978.token#}}
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763536661442'
+        method: get
+        params: 'page:1
+
+          limit:100
+
+          total:100
+
+          status:all'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 获取每个迭代列表
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/projects/id:{{#1763536661442.item#}}/executions
+        variables: []
+      height: 159
+      id: '1763536673955'
+      parentId: '1763536661442'
+      position:
+        x: 194.56980626277482
+        y: 65
+      positionAbsolute:
+        x: 2123.028268399989
+        y: -361.0148624274705
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        code: "\ndef main(arg1: str) -> dict:\n    a = []\n    a.append(arg1)\n  \
+          \  return {\n        \"result\": a ,\n    }\n"
+        code_language: python3
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763536661442'
+        outputs:
+          result:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行
+        type: code
+        variables:
+        - value_selector:
+          - '1763536673955'
+          - body
+          value_type: string
+          variable: arg1
+      height: 54
+      id: '1763691470260'
+      parentId: '1763536661442'
+      position:
+        x: 539.4276378413151
+        y: 65
+      positionAbsolute:
+        x: 2467.8860999785293
+        y: -361.0148624274705
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: token:{{#1762409582978.token#}}
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 获取项目列表
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/programs
+        variables: []
+      height: 140
+      id: '17636923671830'
+      position:
+        x: 1244.3965807403263
+        y: 634.2865681926623
+      positionAbsolute:
+        x: 1244.3965807403263
+        y: 634.2865681926623
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: 提取所有的项目ID
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 所有的项目ID提取到这个数组
+          name: id
+          required: true
+          type: array[number]
+        - description: project_name和ID的对应关系
+          name: project_name
+          required: false
+          type: array[string]
+        query:
+        - '17636923671830'
+        - body
+        reasoning_mode: prompt
+        selected: false
+        title: 项目ID提取器 (1)
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '17636924089900'
+      position:
+        x: 1587.5832840064845
+        y: 634.2865681926623
+      positionAbsolute:
+        x: 1587.5832840064845
+        y: 634.2865681926623
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        error_handle_mode: terminated
+        height: 444
+        is_parallel: true
+        iterator_input_type: array[number]
+        iterator_selector:
+        - '17636924089900'
+        - id
+        output_selector:
+        - '1763692436805017636924368051'
+        - result
+        output_type: array[string]
+        parallel_nums: 3
+        selected: false
+        start_node_id: 1763692436805start
+        title: 迭代 (1)
+        type: iteration
+        width: 1225
+      height: 444
+      id: '17636924368050'
+      position:
+        x: 2267.835127071069
+        y: 240.58397977111986
+      positionAbsolute:
+        x: 2267.835127071069
+        y: 240.58397977111986
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 1225
+      zIndex: 1
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: token:{{#1762409582978.token#}}
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '17636924368050'
+        method: get
+        params: 'page:1
+
+          limit:100
+
+          total:100
+
+          status:all'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 9
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/projects/id:{{#17636924368050.item#}}/executions
+        variables: []
+      height: 175
+      id: '1763692436805017636924368050'
+      parentId: '17636924368050'
+      position:
+        x: 116.40493757058948
+        y: 199.06478813231786
+      positionAbsolute:
+        x: 2384.2400646416586
+        y: 439.6487679034377
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        code: "def main(arg1, arg2, arg3) -> dict:\n    a = []\n    a.append(str(arg1))\n\
+          \    # 确保至少有3个元素，用空字符串填充缺失的\n    a.append(str(arg2) if arg2 is not None\
+          \ else \"\")\n    a.append(str(arg3) if arg3 is not None else \"\")\n  \
+          \  return {\n        \"result\": a,\n    }"
+        code_language: python3
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '17636924368050'
+        outputs:
+          result:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行 3
+        type: code
+        variables:
+        - value_selector:
+          - '1763692436805017636924368050'
+          - body
+          value_type: string
+          variable: arg1
+        - value_selector:
+          - '1763692655529'
+          - project_name
+          value_type: array[string]
+          variable: arg2
+        - value_selector:
+          - '1763692655529'
+          - id_name
+          value_type: array[string]
+          variable: arg3
+      height: 54
+      id: '1763692436805017636924368051'
+      parentId: '17636924368050'
+      position:
+        x: 717.2269302208815
+        y: 137.48033971250572
+      positionAbsolute:
+        x: 2985.0620572919506
+        y: 378.0643194836256
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1763692436805start
+      parentId: '17636924368050'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 2291.835127071069
+        y: 308.58397977111986
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        desc: ''
+        instruction: '{{#1763692436805017636924368050.body#}}'
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '17636924368050'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 项目执行ID
+          name: id
+          required: false
+          type: array[number]
+        - description: 迭代名称和和迭代id的对应关系
+          name: id_name
+          required: false
+          type: array[string]
+        - description: project_id对应的项目名称
+          name: project_id
+          required: false
+          type: string
+        query:
+        - '1763692436805017636924368050'
+        - body
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器 5
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1763692655529'
+      parentId: '17636924368050'
+      position:
+        x: 417.0427407856123
+        y: 223.83089957959464
+      positionAbsolute:
+        x: 2684.8778678566814
+        y: 464.4148793507145
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '17636924368050'
+          - output
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.2
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: e4161989-f806-4fbb-8834-469e6eacb87c
+          role: system
+          text: "根据开始的内容，提取迭代对应的ID\n{{#1762335518210.text#}}\n必须完全匹配，至少有百分之五十以上的字要一样才能说相似\n\
+            根据用户的提示语：来选择正确的ID，并进行输出.如果有提示就输出，如果没有就输出\n项目名称如果在禅道中没有就输出null\n{ project_id\
+            \ : null\n  id:[]\n}\n\n提取对应迭代的项目ID，取名为projectid，取迭代名称为id_name\n项目名称如果在禅道中没有就输出null\n\
+            输出示例\n{ project_id : 1\n  id:[12]\n project_name:\"xxx\"\n id_name[[12,\"\
+            知识库‘’],[1,\"王者荣耀]]\n}"
+        - id: 20127c2a-d535-4ae9-8ecf-3ce4d8a3df7c
+          role: user
+          text: "{{#17636924368050.output#}}\n{{#17636924089900.id#}} \n根据用户的提示语：{{#1762335518210.text#}}，来选择正确的ID，并进行输出.\n\
+            根据开始的内容，提取迭代对应的ID\n{{#1762335518210.text#}} \n根据用户的提示语：来选择正确的ID，并进行输出.如果有提示就输出，如果没有就输出\n\
+            { project_id : 1\n  id:[12]\n project_name:\"xxx\"\n id_name[[12,\"知识库‘’],[1,\"\
+            王者荣耀]]\n}"
+        selected: false
+        structured_output_enabled: true
+        title: LLM 3
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1763694116058'
+      position:
+        x: 2498.8879044574423
+        y: 816.241290093561
+      positionAbsolute:
+        x: 2498.8879044574423
+        y: 816.241290093561
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: '根据开始的内容，提取迭代对应的ID
+
+          {{#1762335518210.text#}}
+
+          提取text的内容，转化为数组'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 根据实际的项目名称去提取
+          name: text
+          required: false
+          type: array[number]
+        - description: 迭代对应的项目ID
+          name: project_id
+          required: false
+          type: number
+        query:
+        - '1763694116058'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 提取项目名称ID与迭代名称ID
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1763694815532'
+      position:
+        x: 2452.145355218978
+        y: 1056.2241145300345
+      positionAbsolute:
+        x: 2452.145355218978
+        y: 1056.2241145300345
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        error_handle_mode: terminated
+        height: 464
+        is_parallel: true
+        iterator_input_type: array[number]
+        iterator_selector:
+        - '1763694815532'
+        - text
+        output_selector:
+        - '1763952830487'
+        - result
+        output_type: array[string]
+        parallel_nums: 3
+        selected: false
+        start_node_id: 1763696347262start
+        title: 迭代 4
+        type: iteration
+        width: 1024.3305974883997
+      height: 464
+      id: '1763696347262'
+      position:
+        x: 2358.8879044574423
+        y: 1310.5448330291097
+      positionAbsolute:
+        x: 2358.8879044574423
+        y: 1310.5448330291097
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 1024
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1763696347262start
+      parentId: '1763696347262'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 2382.8879044574423
+        y: 1378.5448330291097
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: token:{{#1762409582978.token#}}
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763696347262'
+        method: get
+        params: 'page:1
+
+          total:200
+
+          limit:200'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 10
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/executions/{{#1763696347262.item#}}/bugs
+        variables: []
+      height: 159
+      id: '1763948284402'
+      parentId: '1763696347262'
+      position:
+        x: 134.33059748839923
+        y: 187.81279974158292
+      positionAbsolute:
+        x: 2493.2185019458416
+        y: 1498.3576327706926
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1763948284402'
+          - body
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763696347262'
+        model:
+          completion_params:
+            response_format: text
+            temperature: 0.3
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 3eafd3a0-6e5e-4c65-af27-0b7d8f2cb6df
+          role: system
+          text: '```xml
+
+            <instruction>
+
+            请按照以下步骤输出目前的Bug情况：
+
+
+            1. 首先分析提供的Bug数据，包括Bug编号、标题、状态、严重程度、优先级、创建时间、指派人和项目模块等信息
+
+            2. 按照Bug状态进行分类统计，包括：待处理、处理中、待测试、已关闭、已拒绝等状态
+
+            3. 按照严重程度统计Bug数量，包括：致命、严重、一般、轻微等级别
+
+            4. 按照优先级统计Bug分布，包括：紧急、高、中、低等级别
+
+            5. 识别出需要紧急关注的高优先级和高严重程度的Bug
+
+            6. 统计每个模块或项目的Bug数量，找出问题集中的区域
+
+            7. 分析Bug的趋势，如新增Bug数量、关闭Bug数量等
+
+            8. 整理出关键数据点，包括：Bug总数、未解决Bug数、已解决Bug数、解决率等
+
+            9. 用清晰简洁的语言描述当前Bug整体情况，突出重要问题和风险点
+
+            10. 避免使用技术术语，确保报告易于理解
+
+
+            输出内容应该包含：
+
+            - 总体概况（Bug总数、状态分布）
+
+            - 按严重程度和优先级的分类统计
+
+            - 需要重点关注的问题
+
+            - 主要风险和建议
+
+            - 最后给出结论
+
+            请确保输出内容结构清晰、数据准确、重点突出，并且不使用任何XML标签。
+
+            </instruction>
+
+
+            <examples>
+
+            <example>
+
+            <input>
+
+            Bug列表：
+
+            B001 - 登录页面加载缓慢 - 处理中 - 严重 - 高 - 2024-01-15 - 张三 - 用户模块
+
+            B002 - 支付失败错误 - 待处理 - 致命 - 紧急 - 2024-01-16 - 李四 - 支付模块
+
+            B003 - 界面显示错位 - 已关闭 - 轻微 - 低 - 2024-01-10 - 王五 - 前端模块
+
+            B004 - 数据保存异常 - 处理中 - 严重 - 高 - 2024-01-14 - 赵六 - 数据模块
+
+            B005 - 权限验证失败 - 待测试 - 一般 - 中 - 2024-01-13 - 钱七 - 安全模块
+
+            </input>
+
+            <output>
+
+            目前Bug情况总体概况：
+
+            Bug总数：5个，未解决：3个，已解决：1个，待测试：1个，解决率：20%
+
+
+            '
+        - id: bb4eee9a-699f-4c99-84ed-e0e64fd24502
+          role: user
+          text: '{{#1763948284402.body#}} 分析Bugs[]内容'
+        selected: false
+        structured_output_enabled: true
+        title: LLM 4
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1763952741375'
+      parentId: '1763696347262'
+      position:
+        x: 444.3305974883997
+        y: 227.81279974158315
+      positionAbsolute:
+        x: 2803.218501945842
+        y: 1538.3576327706928
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        code: "\ndef main(arg1: str) -> dict:\n    a= []\n    a.append(arg1)\n   \
+          \ return {\n        \"result\": a ,\n    }\n"
+        code_language: python3
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '1763696347262'
+        outputs:
+          result:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行 4
+        type: code
+        variables:
+        - value_selector:
+          - '1763952741375'
+          - text
+          value_type: string
+          variable: arg1
+      height: 54
+      id: '1763952830487'
+      parentId: '1763696347262'
+      position:
+        x: 746.3305974884001
+        y: 213.81279974158292
+      positionAbsolute:
+        x: 3105.2185019458425
+        y: 1524.3576327706926
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        classes:
+        - id: '1'
+          name: '如果提取到的
+
+             "query": "{\n  \"project_id\": 1,\n  \"id\": []\n}""idID为空就分类一'
+        - id: '2'
+          name: '如果迭代ID
+
+             "query": "{\n  \"project_id\": 1,\n  \"id\": [14]\n}"id不为空就走分类2'
+        desc: ''
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        query_variable_selector:
+        - '1763694116058'
+        - text
+        selected: false
+        title: 问题分类器 2
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 236
+      id: '1763955481256'
+      position:
+        x: 3010.8370723792914
+        y: 884.1436207645102
+      positionAbsolute:
+        x: 3010.8370723792914
+        y: 884.1436207645102
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1763955481256'
+          - class_name
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: f44d4f43-841c-4e56-bfaf-0ad3b7a2e25d
+          role: system
+          text: 'Bug查询小助手，如果找不到正确的迭代信息，就提示用户查询禅道的迭代。回答：
+
+            您输入的迭代数据有误，请先查询禅道的迭代情况。错误原因{{#1763694815532.text#}},显示
+
+            {{#1763694815532.text#}}的完整内容，根据{{#17652672853700.text#}}提示可以输出的迭代
+
+            举例：
+
+            错误原因：{{#1763694815532.text#}}
+
+            您输入的迭代内容有误，可以输入：
+
+            1.专利平台视觉优化Bug情况
+
+            2.知识库三期Bug情况
+
+            进行查询'
+        - id: a1ac6646-ec54-4fea-ab90-2205adc84b74
+          role: user
+          text: '{{#1763694815532.text#}}没有Bug的分析信息，就提示用户重新输入准确的迭代内容
+
+            显示{{#1763694815532.text#}}的完整内容'
+        selected: false
+        title: LLM 5
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1763955574399'
+      position:
+        x: 4964.76498635999
+        y: 1553.5496145454747
+      positionAbsolute:
+        x: 4964.76498635999
+        y: 1553.5496145454747
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1763955574399'
+          - text
+          value_type: string
+          variable: text
+        selected: false
+        title: 结束 3
+        type: end
+      height: 90
+      id: '1763955642383'
+      position:
+        x: 4964.76498635999
+        y: 1761.5496145454747
+      positionAbsolute:
+        x: 4964.76498635999
+        y: 1761.5496145454747
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: token:{{#1762409582978.token#}}
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 获取项目列表 (1)
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/programs
+        variables: []
+      height: 140
+      id: '17652672415750'
+      position:
+        x: 3453.7758144523227
+        y: 1367.008394411996
+      positionAbsolute:
+        x: 3453.7758144523227
+        y: 1367.008394411996
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: 提取所有的项目ID
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 所有的项目ID提取到这个数组
+          name: id
+          required: true
+          type: array[number]
+        query:
+        - '17652672415750'
+        - body
+        reasoning_mode: prompt
+        selected: false
+        title: 项目ID提取器 (1)
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '17652672544560'
+      position:
+        x: 3870.2290777047
+        y: 1367.008394411996
+      positionAbsolute:
+        x: 3870.2290777047
+        y: 1367.008394411996
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        error_handle_mode: terminated
+        height: 356
+        is_parallel: false
+        iterator_input_type: array[number]
+        iterator_selector:
+        - '17652672544560'
+        - id
+        output_selector:
+        - '1765267264511017652672645110'
+        - body
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1765267264511start
+        title: 迭代 (2)
+        type: iteration
+        width: 821.4103149769776
+      height: 356
+      id: '17652672645110'
+      position:
+        x: 4696.01554192208
+        y: 838.313154261006
+      positionAbsolute:
+        x: 4696.01554192208
+        y: 838.313154261006
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 821
+      zIndex: 1
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: token:{{#1762409582978.token#}}
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '17652672645110'
+        method: get
+        params: 'page:1
+
+          limit:100
+
+          total:100
+
+          status:all'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 8
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/projects/id:{{#17652672645110.item#}}/executions
+        variables: []
+      height: 175
+      id: '1765267264511017652672645110'
+      parentId: '17652672645110'
+      position:
+        x: 184.73164975664622
+        y: 109
+      positionAbsolute:
+        x: 4880.747191678726
+        y: 947.313154261006
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        code: "\ndef main(arg1: str) -> dict:\n    a = []\n    a.append(arg1)\n  \
+          \  return {\n        \"result\": a ,\n    }\n"
+        code_language: python3
+        desc: ''
+        isInIteration: true
+        isInLoop: false
+        iteration_id: '17652672645110'
+        outputs:
+          result:
+            children: null
+            type: array[string]
+        selected: false
+        title: 代码执行 4
+        type: code
+        variables:
+        - value_selector:
+          - '1765267264511017652672645110'
+          - body
+          value_type: string
+          variable: arg1
+      height: 54
+      id: '1765267264511017652672645111'
+      parentId: '17652672645110'
+      position:
+        x: 539.4276378413151
+        y: 65
+      positionAbsolute:
+        x: 5235.443179763395
+        y: 903.313154261006
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1765267264511start
+      parentId: '17652672645110'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 4720.01554192208
+        y: 906.313154261006
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '17652672645110'
+          - output
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: ada788cd-70b6-484e-888d-c62e3fabaa41
+          role: system
+          text: '```xml
+
+            <instruction>
+
+            首先，你需要获取禅道系统中所有项目的JSON数据。请按照以下步骤操作：
+
+
+            1. 连接到禅道系统的API接口，使用提供的认证信息（如用户名、密码或API令牌）进行身份验证
+
+            2. 调用获取项目列表的API端点，通常这个端点是类似于"/api/projects"或"/api/project/getList"的URL
+
+            3. 确保请求参数正确设置，包括分页参数（如果需要获取所有项目）
+
+            4. 解析返回的JSON响应，确认数据格式正确且包含完整的项目信息
+
+
+            接下来，分析项目数据并生成报告：
+
+
+            5. 从JSON数据中提取项目的基本信息，包括项目ID、项目名称、项目状态、负责人、开始时间、结束时间等关键字段
+
+            6. 统计项目总数，并按状态分类（如进行中、已关闭、已延期等）
+
+            7. 整理项目列表，确保信息清晰易读
+
+            8. 如果发现异常数据或缺失信息，请在报告中注明
+
+            9.分析目前对应项目有哪些产品
+
+            10.输出每一个项目的迭代情况，所有的都要写
+
+            在生成最终报告时：
+
+            - 使用简洁明了的语言描述项目概况
+
+            - 以列表形式展示各个项目的基本信息
+
+            - 包含项目统计摘要
+
+            - 确保输出格式整洁，便于阅读
+
+            - 输出内容中不得包含任何XML标签
+
+
+            请确保整个过程处理得当，报告内容准确反映禅道系统中项目的当前状况。
+
+            </instruction>
+
+            <examples>
+
+
+            <output>
+
+            数字乡村v1.1项目迭代详情：
+
+            已完成
+
+            1.迭代名称：电商迭代20
+
+            2.
+
+            已关闭
+
+            1.
+
+            2.
+
+            待开始
+
+            1.
+
+            2.
+
+            测试项目迭代详情：
+
+            已完成
+
+            1.迭代名称：电商迭代20
+
+            2.
+
+            已关闭
+
+            1.
+
+            2.
+
+            待开始
+
+            1.
+
+            2.
+
+            <example>'
+        - id: a7cfe346-d886-4432-a9ab-de5a5262ae55
+          role: user
+          text: '分析项目迭代信息：
+
+            {{#17652672645110.output#}}'
+        selected: false
+        title: 整理内容 (1)
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '17652672853700'
+      position:
+        x: 4964.76498635999
+        y: 1367.008394411996
+      positionAbsolute:
+        x: 4964.76498635999
+        y: 1367.008394411996
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: 问题与禅道或者Bug不相关
+        - id: '2'
+          name: '用户问题与禅道产品或查询迭代Bug信息相关联。
+
+            例如：
+
+            查询目前的禅道产品信息
+
+            法律智能体的Bug情况'
+        - id: '1765441376581'
+          name: '用户描述的是一个问题，并且带有Bug或异常或不正常的功能描述。
+
+            例如：
+
+            页面无法正常打开，判断为Bug
+
+            Bug 无法使用法律智能体
+
+            发送信息无法正常响应等
+
+            【智能检索】筛选条件无法回显'
+        desc: ''
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        query_variable_selector:
+        - '1762335518210'
+        - text
+        selected: false
+        title: 问题分类器 3
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 322
+      id: '1765330178873'
+      position:
+        x: -319.49802746893823
+        y: 582.3916303704899
+      positionAbsolute:
+        x: -319.49802746893823
+        y: 582.3916303704899
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1762335518210'
+          - text
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 60248245-0100-47a2-93b7-ad7a302483e9
+          role: system
+          text: '{{#1762335518210.text#}} 提示用户输入与禅道Bug查询相关的问题。
+
+            我的系统身份是禅道查询助手
+
+            例如：
+
+            我的系统身份是禅道查询助手
+
+            禅道目前有哪些迭代，或者专利项目视觉优化的Bug情况之类的问题。'
+        - id: 171d5f31-b867-4e12-8da2-00fb3a95e522
+          role: user
+          text: '{{#1762335518210.text#}}'
+        selected: false
+        title: 问题不相关
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1765330261808'
+      position:
+        x: 201.52403630672404
+        y: 705.9171751361197
+      positionAbsolute:
+        x: 201.52403630672404
+        y: 705.9171751361197
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1765330261808'
+          - text
+          value_type: string
+          variable: text
+        selected: false
+        title: 不相关
+        type: end
+      height: 90
+      id: '1765330350296'
+      position:
+        x: 201.52403630672404
+        y: 850.6531678657461
+      positionAbsolute:
+        x: 201.52403630672404
+        y: 850.6531678657461
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-61
+            key: ''
+            type: text
+            value: '{"account": "shidawei", "password": "shidawei"}'
+          type: json
+        desc: ''
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 进行登录获取token (创建bug）
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/tokens
+        variables: []
+      height: 140
+      id: '17654413998430'
+      position:
+        x: 72.19691333918604
+        y: 1137.5531763802283
+      positionAbsolute:
+        x: 72.19691333918604
+        y: 1137.5531763802283
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: "{\n  \"title\": \"{{#1765441837796.title#}}\",\n  \"severity\"\
+              : 2,\n  \"pri\": 1,\n  \"project\":1,\n  \"execution\":17,\n  \"type\"\
+              : \"codeerror\",\n  \"openedBuild\": [\"trunk\"],\n  \"assignedTo\"\
+              : \"石大卫\",\n \"steps\": \"禅道智能体 {{#1762335518210.text#}}<a href={{#1767603386292.result#}}>BUG图片</a>\
+              \ \"\n}"
+          type: raw-text
+        desc: ''
+        headers: 'token:{{#17654430768190.token#}}
+
+          User-Agent:Apifox/1.0.0 (https://apifox.com)
+
+          Content-Type:application/json
+
+          Accept:*/*
+
+          Host:192.168.0.28:9980
+
+          Connection:keep-alive
+
+          Cookie:lang=zh-cn; device=desktop; theme=default; zentaosid=7dbadbc3b68b57aaa7a8db746d98235a;
+          lastBugModule=0'
+        method: POST
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 创建Bug
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/products/1/bugs
+        variables: []
+      height: 140
+      id: '1765441433670'
+      position:
+        x: 928.5219856868795
+        y: 1686.7832595617374
+      positionAbsolute:
+        x: 928.5219856868795
+        y: 1686.7832595617374
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 对于Bug的描述作为标题
+          name: title
+          required: false
+          type: string
+        - description: 选择修复问题的人
+          name: solve
+          required: false
+          type: string
+        query:
+        - '1762335518210'
+        - text
+        reasoning_mode: prompt
+        selected: false
+        title: 提取指派人
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1765441837796'
+      position:
+        x: 465.6548314027499
+        y: 1137.5531763802283
+      positionAbsolute:
+        x: 465.6548314027499
+        y: 1137.5531763802283
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: not empty
+            id: f60abf68-c521-48ae-88f4-9e976c39cf65
+            value: ''
+            varType: string
+            variable_selector:
+            - '1765441837796'
+            - solve
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: 条件分支
+        type: if-else
+      height: 126
+      id: '1765442583340'
+      position:
+        x: 499.95346161067573
+        y: 1598.640837985351
+      positionAbsolute:
+        x: 499.95346161067573
+        y: 1598.640837985351
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: "{\n  \"title\": \"{{#1765441837796.title#}}\",\n  \"severity\"\
+              : 2,\n   \"project\":1,\n  \"execution\":17,\n  \"pri\": 2,\n  \"type\"\
+              : \"codeerror\",\n  \"openedBuild\": [\"trunk\"],\n  \"assignedTo\"\
+              : \"{{#1766108042240.result#}}\",\n   \"steps\": \"禅道智能体 {{#1762335518210.text#}}<a\
+              \ href={{#1767603386292.result#}}>BUG图片</a> \"\n}"
+          type: raw-text
+        desc: ''
+        headers: 'token:{{#17654430768190.token#}}
+
+          User-Agent:Apifox/1.0.0 (https://apifox.com)
+
+          Content-Type:application/json
+
+          Accept:*/*
+
+          Host:192.168.0.28:9980
+
+          Connection:keep-alive
+
+          Cookie:lang=zh-cn; device=desktop; theme=default; zentaosid=7dbadbc3b68b57aaa7a8db746d98235a;
+          lastBugModule=0'
+        method: POST
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: 创建Bug 带指派人
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/products/1/bugs
+        variables: []
+      height: 140
+      id: '17654426267230'
+      position:
+        x: 478.73610990422674
+        y: 2080.235748553527
+      positionAbsolute:
+        x: 478.73610990422674
+        y: 2080.235748553527
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 令牌
+          name: token
+          required: false
+          type: string
+        query:
+        - '17654413998430'
+        - body
+        reasoning_mode: prompt
+        selected: false
+        title: 提取token 指派
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '17654430768190'
+      position:
+        x: 465.6548314027499
+        y: 994.84832000048
+      positionAbsolute:
+        x: 465.6548314027499
+        y: 994.84832000048
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1765441433670'
+          - body
+          value_type: string
+          variable: body
+        selected: false
+        title: 创建成功
+        type: end
+      height: 90
+      id: '1765443638517'
+      position:
+        x: 1490.0834695455937
+        y: 1628.586540897483
+      positionAbsolute:
+        x: 1490.0834695455937
+        y: 1628.586540897483
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '17654426267230'
+          - body
+          value_type: string
+          variable: body
+        selected: false
+        title: 指派成功
+        type: end
+      height: 90
+      id: '1765443648643'
+      position:
+        x: 1013.3316869262578
+        y: 2518.439578952783
+      positionAbsolute:
+        x: 1013.3316869262578
+        y: 2518.439578952783
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: "{\n  \"pagination\": {\n    \"pageNumber\": 1,\n    \"showNumber\"\
+              : 10000\n  }\n}"
+          type: raw-text
+        desc: ''
+        headers: 'operationID:1765781928942
+
+          token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiJpbUFkbWluIiwiUGxhdGZvcm1JRCI6MSwiZXhwIjoxNzczNTU3MjU1LCJuYmYiOjE3NjU3ODA5NTUsImlhdCI6MTc2NTc4MTI1NX0.ZLR-8pxRIPAGrHLob0C_dRf61SjedHkLFJ22s0ASetc
+
+          User-Agent:Apifox/1.0.0 (https://apifox.com)
+
+          Content-Type:application/json
+
+          Accept:*/*
+
+          Host:192.168.0.27:10002
+
+          Connection:keep-alive'
+        method: POST
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 14
+        type: http-request
+        url: http://192.168.0.27:10002/user/get_users
+        variables: []
+      height: 140
+      id: '17657824225130'
+      position:
+        x: 484.79629594557184
+        y: 2266.9944029952344
+      positionAbsolute:
+        x: 484.79629594557184
+        y: 2266.9944029952344
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        instruction: '{{#1765441837796.solve#}} 提交指派人对应的user_id'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-chat
+          provider: langgenius/deepseek/deepseek
+        parameters:
+        - description: 指派人对应的user_id
+          name: userID
+          required: false
+          type: string
+        query:
+        - '17657824225130'
+        - body
+        reasoning_mode: prompt
+        selected: false
+        title: 参数提取器 9
+        type: parameter-extractor
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1765782472291'
+      position:
+        x: 484.79629594557184
+        y: 2500.890383897985
+      positionAbsolute:
+        x: 484.79629594557184
+        y: 2500.890383897985
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: "{\n  \"sendID\": \"2\",\n  \"recvID\": \"{{#1765782472291.userID#}}\"\
+              ,\n  \"groupID\": \"\",\n  \"senderNickname\": \"禅道智能助手\",\n  \"senderFaceURL\"\
+              : \"http://www.head.com\",\n  \"senderPlatformID\": 1,\n  \"content\"\
+              : {\n    \"content\": \"{{#1765441837796.title#}}{{#1765441837796.solve#}}{{#1767596923283.result#}}\"\
+              \n  },\n  \"contentType\": 101,\n  \"sessionType\": 1,\n  \"isOnlineOnly\"\
+              : false,\n  \"notOfflinePush\": false,\n  \"sendTime\": {{#1765783155283.result#}},\n\
+              \  \"offlinePushInfo\": {\n    \"title\": \"BUG\",\n    \"desc\": \"\
+              \",\n    \"ex\": \"\",\n    \"iOSPushSound\": \"default\",\n    \"iOSBadgeCount\"\
+              : true\n  },\n  \"ex\": \"ex\"\n}"
+          type: raw-text
+        desc: ''
+        headers: 'operationID:1646445464564
+
+          token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiJpbUFkbWluIiwiUGxhdGZvcm1JRCI6MSwiZXhwIjoxNzczMjc3NjM4LCJuYmYiOjE3NjU1MDEzMzgsImlhdCI6MTc2NTUwMTYzOH0.8rkxKqhiCw2rFX8R81W1BgpMk1Gmsv25-J3YvT2KZKM
+
+          User-Agent:Apifox/1.0.0 (https://apifox.com)
+
+          Content-Type:application/json
+
+          Accept:*/*
+
+          Host:192.168.0.27:10002
+
+          Connection:keep-alive'
+        method: POST
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 13
+        type: http-request
+        url: http://192.168.0.27:10002/msg/send_msg
+        variables: []
+      height: 140
+      id: '1765782659096'
+      position:
+        x: 1013.3316869262578
+        y: 2295.880955588906
+      positionAbsolute:
+        x: 1013.3316869262578
+        y: 2295.880955588906
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import time\ndef main() -> dict:\n    timestamp = time.time()\n   \
+          \ milliseconds_timestamp = int(timestamp * 1000)\n    return {\n       \
+          \ \"result\": milliseconds_timestamp ,\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: number
+        selected: false
+        title: 代码执行 5
+        type: code
+        variables: []
+      height: 54
+      id: '1765783155283'
+      position:
+        x: 489.39108936556
+        y: 2661.1670324779634
+      positionAbsolute:
+        x: 489.39108936556
+        y: 2661.1670324779634
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - type: text
+            value: ''
+          type: none
+        desc: ''
+        headers: 'Token:7dbadbc3b68b57aaa7a8db746d98235a
+
+          User-Agent:Apifox/1.0.0 (https://apifox.com)
+
+          Accept:*/*
+
+          Host:192.168.0.28:9980
+
+          Connection:keep-alive
+
+          Cookie:lang=zh-cn; device=desktop; theme=default'
+        method: GET
+        params: 'page:1
+
+          limit:5000'
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求 14
+        type: http-request
+        url: http://192.168.0.28:9980/api.php/v1/users
+        variables: []
+      height: 140
+      id: '1766107948192'
+      position:
+        x: 499.95346161067573
+        y: 1794.1010144507668
+      positionAbsolute:
+        x: 499.95346161067573
+        y: 1794.1010144507668
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(arg1: str, arg2: str) -> dict:\n    # 解析JSON数据\n    import\
+          \ json\n    \n    # 解析用户数据\n    data = json.loads(arg1)\n    \n    # 查找匹配用户\n\
+          \    target_account = \"\"\n    for user in data.get(\"users\", []):\n \
+          \       if user.get(\"realname\") == arg2:\n            target_account =\
+          \ user.get(\"account\", \"\")\n            break\n    \n    return {\n \
+          \       \"result\": target_account\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码执行 6
+        type: code
+        variables:
+        - value_selector:
+          - '1766107948192'
+          - body
+          value_type: string
+          variable: arg1
+        - value_selector:
+          - '1765441837796'
+          - solve
+          value_type: string
+          variable: arg2
+      height: 54
+      id: '1766108042240'
+      position:
+        x: 489.39108936556
+        y: 1975.2588111830464
+      positionAbsolute:
+        x: 489.39108936556
+        y: 1975.2588111830464
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(arg1: str = None) -> dict:\n    if arg1:\n        base_url\
+          \ = \"http://192.168.0.43:29012/\"\n        full_url = base_url.rstrip('/')\
+          \ + '/' + arg1.lstrip('/')\n        return {'result': full_url}\n    else:\n\
+          \        return {'result': ''}"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 图片
+        type: code
+        variables:
+        - value_selector:
+          - '1762335518210'
+          - fileurl
+          - url
+          value_type: file
+          variable: arg1
+      height: 54
+      id: '1767596923283'
+      position:
+        x: 484.79629594557184
+        y: 1282.0653002152494
+      positionAbsolute:
+        x: 484.79629594557184
+        y: 1282.0653002152494
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The URL of the image to download
+            ja_JP: ダウンロードする画像のURL
+            pt_BR: A URL da imagem para baixar
+            zh_Hans: 要下载的图片URL
+          label:
+            en_US: Image URL
+            ja_JP: 画像URL
+            pt_BR: URL da Imagem
+            zh_Hans: 图片URL
+          llm_description: The URL of the image to be downloaded
+          max: null
+          min: null
+          name: image_url
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          image_url: ''
+        provider_id: lzfxxx/image-downloader/image-downloader
+        provider_name: lzfxxx/image-downloader/image-downloader
+        provider_type: builtin
+        selected: false
+        title: down
+        tool_configurations: {}
+        tool_description: 从URL下载图片
+        tool_label: 图片下载器
+        tool_name: image_downloader
+        tool_parameters:
+          image_url:
+            type: mixed
+            value: '{{#1767596923283.result#}}'
+        type: tool
+        version: '2'
+      height: 97
+      id: '1767603044212'
+      position:
+        x: 484.79629594557184
+        y: 1358.453651473552
+      positionAbsolute:
+        x: 484.79629594557184
+        y: 1358.453651473552
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(arg1: list = None) -> dict:\n    if arg1 and isinstance(arg1,\
+          \ list) and len(arg1) > 0:\n        # 提取列表中的第一个文件URL\n        url_param\
+          \ = arg1[0].get('url', '') if isinstance(arg1[0], dict) else ''\n      \
+          \  \n        if url_param:\n            base_url = \"http://192.168.0.43:29012/\"\
+          \n            full_url = base_url.rstrip('/') + '/' + url_param.lstrip('/')\n\
+          \            return {'result': full_url}\n    \n    return {'result': ''}"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 代码9
+        type: code
+        variables:
+        - value_selector:
+          - '1767603044212'
+          - files
+          value_type: array[file]
+          variable: arg1
+      height: 54
+      id: '1767603386292'
+      position:
+        x: 499.95346161067573
+        y: 1508.8896560370317
+      positionAbsolute:
+        x: 499.95346161067573
+        y: 1508.8896560370317
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 124.12261613115129
+      y: 164.76704513731215
+      zoom: 0.3298769776932236

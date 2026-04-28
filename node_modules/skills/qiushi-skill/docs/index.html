@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="求是 Skill：从方法论出发，系统性地武装 AI Agent 的大脑。">
+<title>求是 Skill | 武装 AI 的大脑</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap');
+
+  :root {
+    --color-bg: #f5efe6;
+    --color-primary: #8b1a1a;
+    --color-primary-soft: rgba(139, 26, 26, 0.08);
+    --color-text: #2a1a0e;
+    --color-muted: #6b5a4a;
+    --color-border: rgba(139, 26, 26, 0.28);
+    --color-paper: rgba(255, 252, 245, 0.74);
+    --font-primary: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+    --max-width: 1032px;
+    --shadow-frame: inset 0 0 0 9px var(--color-bg), inset 0 0 0 10.5px var(--color-primary);
+    --transition-fast: 180ms ease;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    color: var(--color-text);
+    font-family: var(--font-primary);
+    background:
+      radial-gradient(circle at top left, rgba(139, 26, 26, 0.06), transparent 32%),
+      radial-gradient(circle at bottom right, rgba(107, 90, 74, 0.08), transparent 36%),
+      repeating-linear-gradient(0deg, transparent, transparent 84px, rgba(139, 26, 26, 0.035) 84px, rgba(139, 26, 26, 0.035) 85px),
+      var(--color-bg);
+    line-height: 1.72;
+    letter-spacing: 0.02em;
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .page {
+    width: min(var(--max-width), calc(100% - 32px));
+    margin: 0 auto;
+    padding: 32px 0 56px;
+  }
+
+  .frame {
+    position: relative;
+    border: 4px solid var(--color-primary);
+    box-shadow: var(--shadow-frame);
+    padding: calc(10.5px + 18px);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 56%), var(--color-paper);
+  }
+
+  .section-label {
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    background: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    padding: 2px 12px;
+    white-space: nowrap;
+  }
+
+  .section {
+    margin-top: 32px;
+  }
+
+  .section-heading {
+    margin: 0;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+  }
+
+  .section-kicker {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+
+  .section-intro {
+    margin: 14px 0 0;
+    color: var(--color-muted);
+    font-size: 1rem;
+  }
+
+  .hero {
+    margin-top: 12px;
+    padding-top: calc(10.5px + 38px);
+    text-align: center;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-portrait {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    width: min(15vw, 150px);
+    min-width: 118px;
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+
+  .hero-slogan {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 0.92rem;
+    letter-spacing: 0.52em;
+  }
+
+  .hero-title-lockup {
+    margin: 18px auto 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(10px, 2vw, 18px);
+    flex-wrap: wrap;
+  }
+
+  .hero-calligraphy {
+    width: clamp(164px, 30vw, 276px);
+  }
+
+  .hero-title-skill {
+    color: var(--color-primary);
+    font-size: clamp(2.4rem, 7vw, 4.1rem);
+    line-height: 0.92;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-indent: 0.12em;
+  }
+
+  .hero-subtitle {
+    margin: 0;
+    font-size: clamp(1rem, 3.2vw, 1.35rem);
+    letter-spacing: 0.34em;
+    color: var(--color-text);
+    font-weight: 700;
+  }
+
+  .hero-copy {
+    width: min(620px, 100%);
+    margin: 26px auto 0;
+    color: var(--color-muted);
+    font-size: 1.02rem;
+  }
+
+  .hero-copy strong {
+    color: var(--color-primary);
+  }
+
+  .hero-meta {
+    margin-top: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .star-badge-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: 1.5px solid var(--color-primary);
+    background: rgba(245, 239, 230, 0.9);
+    text-decoration: none;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .star-badge-link:hover,
+  .star-badge-link:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0 rgba(139, 26, 26, 0.14);
+    background: rgba(139, 26, 26, 0.08);
+  }
+
+  .version-pill {
+    padding: 7px 12px;
+    border: 1.5px solid var(--color-primary);
+    background: rgba(245, 239, 230, 0.9);
+    font-size: 0.84rem;
+    letter-spacing: 0.12em;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  .hero-actions,
+  .cta-actions {
+    margin-top: 26px;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 168px;
+    padding: 13px 22px;
+    border: 2px solid var(--color-primary);
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .button:hover,
+  .button:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0 rgba(139, 26, 26, 0.14);
+  }
+
+  .button-primary {
+    background: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  .button-secondary {
+    background: transparent;
+    color: var(--color-primary);
+  }
+
+  .quote-divider {
+    margin: 34px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--color-primary);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  .quote-divider::before,
+  .quote-divider::after {
+    content: "";
+    flex: 1;
+    border-top: 2px solid var(--color-primary);
+    opacity: 0.9;
+  }
+
+  .quote-divider span {
+    flex: 0 1 auto;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .problem-list {
+    list-style: none;
+    margin: 26px 0 0;
+    padding: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .problem-item {
+    position: relative;
+    padding: 18px 0 18px 38px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .problem-item::before {
+    content: "✕";
+    position: absolute;
+    left: 4px;
+    top: 18px;
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+
+  .problem-title {
+    display: block;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: 0.06em;
+  }
+
+  .methodology-grid {
+    margin-top: 28px;
+    display: grid;
+    gap: 16px;
+  }
+
+  .principle-card {
+    padding: 22px 22px 20px;
+    border: 2px solid var(--color-primary);
+    background: rgba(255, 252, 245, 0.7);
+  }
+
+  .principle-label {
+    display: inline-block;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+    background: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+  }
+
+  .principle-card h3,
+  .layer-card h3,
+  .star-panel h3,
+  .platform-card h3,
+  .clarify-card h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.26rem;
+    letter-spacing: 0.08em;
+  }
+
+  .principle-card p,
+  .layer-card p,
+  .platform-card p,
+  .clarify-card p,
+  .weapon-card p {
+    margin: 10px 0 0;
+    color: var(--color-muted);
+  }
+
+  .principle-calligraphy {
+    display: block;
+    width: min(100%, 300px);
+    margin: 12px auto 4px;
+  }
+
+  .layer-stack {
+    display: grid;
+    gap: 12px;
+  }
+
+  .layer-card {
+    position: relative;
+    padding: 22px 22px 20px;
+    border: 2px solid var(--color-primary);
+    background: rgba(245, 239, 230, 0.88);
+  }
+
+  .layer-no {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    padding: 3px 10px;
+    background: var(--color-primary);
+    color: var(--color-bg);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+
+  .method-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .method-tag {
+    padding: 6px 10px;
+    border: 1.5px solid var(--color-primary);
+    background: rgba(255, 255, 255, 0.3);
+    font-size: 0.84rem;
+    letter-spacing: 0.08em;
+    color: var(--color-text);
+  }
+
+  .weapons-grid {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .weapon-card {
+    min-height: 100%;
+    padding: 22px 18px 20px;
+    border: 2px solid var(--color-primary);
+    background: rgba(255, 252, 245, 0.62);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .weapon-card:hover {
+    background: rgba(139, 26, 26, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .weapon-no {
+    margin-bottom: 12px;
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    letter-spacing: 0.24em;
+  }
+
+  .weapon-icon {
+    margin-bottom: 8px;
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .weapon-card h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.14rem;
+    line-height: 1.35;
+    letter-spacing: 0.08em;
+  }
+
+  .weapon-keyword {
+    margin-top: 12px;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .weapon-source {
+    margin-top: 12px;
+    font-size: 0.88rem;
+    color: var(--color-muted);
+  }
+
+  .weapon-scenario {
+    margin-top: 8px;
+    font-size: 0.92rem;
+  }
+
+  .clarify-grid,
+  .platforms-grid {
+    margin-top: 28px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .clarify-card,
+  .platform-card,
+  .star-panel {
+    padding: 22px 20px;
+    border: 2px solid var(--color-primary);
+    background: rgba(255, 252, 245, 0.65);
+  }
+
+  .clarify-index,
+  .platform-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    padding: 3px 10px;
+    margin-bottom: 12px;
+    border: 1.5px solid var(--color-primary);
+    color: var(--color-primary);
+    font-size: 0.76rem;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+  }
+
+  .star-grid {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.35fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .badge-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .star-link {
+    text-decoration: none;
+  }
+
+  .chart-shell {
+    overflow: hidden;
+  }
+
+  .chart-shell img {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    background: #fffdf8;
+  }
+
+  .platforms-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .platform-list {
+    margin: 12px 0 0;
+    padding-left: 18px;
+    color: var(--color-muted);
+  }
+
+  .platform-note {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+  }
+
+  .cta {
+    margin-top: 38px;
+    text-align: center;
+    padding-top: calc(10.5px + 34px);
+  }
+
+  .cta h2 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    line-height: 1.45;
+    letter-spacing: 0.08em;
+  }
+
+  .cta p {
+    width: min(580px, 100%);
+    margin: 16px auto 0;
+    color: var(--color-muted);
+  }
+
+  .footer-note {
+    margin-top: 24px;
+    color: var(--color-muted);
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .js-ready .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 520ms ease, transform 520ms ease;
+  }
+
+  .js-ready .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 800px) {
+    .star-grid,
+    .platforms-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page {
+      width: min(var(--max-width), calc(100% - 24px));
+      padding-top: 24px;
+      padding-bottom: 42px;
+    }
+
+    .frame {
+      padding: calc(10.5px + 16px);
+    }
+
+    .hero-title-lockup {
+      margin-top: 16px;
+      gap: 8px;
+    }
+
+    .hero-calligraphy {
+      width: min(64vw, 216px);
+    }
+
+    .hero-title-skill {
+      font-size: clamp(2rem, 9vw, 3rem);
+      letter-spacing: 0.08em;
+      text-indent: 0.08em;
+    }
+
+    .hero-portrait {
+      left: 8px;
+      bottom: 14px;
+      width: 106px;
+      min-width: 0;
+      opacity: 0.12;
+    }
+
+    .hero-slogan,
+    .hero-subtitle {
+      letter-spacing: 0.2em;
+    }
+
+    .section-heading {
+      letter-spacing: 0.04em;
+    }
+
+    .quote-divider {
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .quote-divider span {
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+    }
+
+    .weapons-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 400px) {
+    .hero-title-lockup {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-actions,
+    .cta-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .button {
+      width: 100%;
+      min-width: auto;
+    }
+
+    .weapons-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .js-ready .reveal,
+    .button,
+    .weapon-card {
+      transition: none;
+    }
+
+    .js-ready .reveal,
+    .js-ready .reveal.is-visible,
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <header class="frame hero reveal" id="top">
+      <div class="hero-content">
+        <p class="hero-slogan">丢掉幻想，准备斗争</p>
+        <h1 class="hero-title-lockup">
+          <img class="hero-calligraphy" src="./assets/qiushi.png" alt="求是">
+          <span class="hero-title-skill">Skill</span>
+        </h1>
+        <p class="hero-subtitle">武装 AI 的大脑</p>
+        <p class="hero-copy">
+          你的 AI 不应该只是一个唯唯诺诺的工具。它应该是一个<strong>先看事实、再下判断、能够持续推进</strong>的行动者。
+          「求是 Skill」从教员思想中提炼一条总原则与九大方法论工具，把抽象理念变成可执行的工作方式。
+        </p>
+        <div class="hero-meta">
+          <a class="star-badge-link" href="https://github.com/HughYau/qiushi-skill" target="_blank" rel="noreferrer" aria-label="在 GitHub 上给求是 Skill 点 Star">
+            <img
+              src="https://img.shields.io/github/stars/HughYau/qiushi-skill?style=flat-square&color=8b1a1a&labelColor=f5efe6"
+              alt="求是 Skill GitHub Star 徽标（可点击）"
+            >
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="quote-divider reveal" aria-hidden="true">
+      <span>「世界上怕就怕'认真'二字。」</span>
+    </div>
+
+    <section class="frame section reveal" id="problems">
+      <span class="section-label">根本问题</span>
+      <p class="section-kicker">AI Agent 的根本问题</p>
+      <h2 class="section-heading">它们会思考，但不会“想问题”。</h2>
+      <p class="section-intro">
+        当模型开始具备执行力之后，真正拉开差距的不是参数规模，而是它面对复杂现实时有没有一套可靠的方法论。
+      </p>
+      <ul class="problem-list">
+        <li class="problem-item">
+          <span class="problem-title">胡子眉毛一把抓</span>
+          面对复杂问题抓不住重点，不知道什么是主要矛盾，什么只是表面噪音。
+        </li>
+        <li class="problem-item">
+          <span class="problem-title">没有调查就急于发言</span>
+          不先核对事实，不先摸清上下文，上来就给答案，最后犯的是教条主义的错误。
+        </li>
+        <li class="problem-item">
+          <span class="problem-title">方案做完不自查</span>
+          缺少复盘与自我批评的能力，产出停留在“差不多就行”，不能形成可靠闭环。
+        </li>
+        <li class="problem-item">
+          <span class="problem-title">一遇阻力就停止推进</span>
+          动不动就把困难归因于边界限制，缺少持续推进、分阶段逼近目标的韧性。
+        </li>
+        <li class="problem-item">
+          <span class="problem-title">同时做十件事，件件做不好</span>
+          资源不聚焦，优先级不清晰，不懂集中兵力，也不懂在复杂局面下做取舍。
+        </li>
+      </ul>
+    </section>
+
+    <div class="quote-divider reveal" aria-hidden="true">
+      <span>「没有调查，就没有发言权。」</span>
+    </div>
+
+    <section class="frame section reveal" id="methodology">
+      <span class="section-label">方法论结构</span>
+      <p class="section-kicker">总原则 + 三层架构</p>
+      <h2 class="section-heading">不是零散技巧，而是一套成体系的认知工事。</h2>
+      <p class="section-intro">
+        求是 Skill 并不把方法论拆成孤立口号，而是从总原则出发，搭起哲学基座、工作方法与战略战术三层结构。
+      </p>
+      <div class="methodology-grid">
+        <article class="principle-card">
+          <span class="principle-label">总原则</span>
+          <h3><img class="principle-calligraphy" src="./assets/shishiqiushi.png" alt="实事求是"></h3>
+          <p>从客观存在着的实际事物出发，让事实规定判断，让现实修正理论。它不是第十件武器，而是全部武器共同服从的认识论准绳。</p>
+        </article>
+        <div class="layer-stack">
+          <article class="layer-card">
+            <span class="layer-no">第一层</span>
+            <h3>哲学基座</h3>
+            <p>先学会分析问题，再谈执行问题。矛盾分析法负责抓主要矛盾，实践认识论负责把验证和迭代放回现实。</p>
+            <div class="method-tags">
+              <span class="method-tag">矛盾分析法</span>
+              <span class="method-tag">实践认识论</span>
+            </div>
+          </article>
+          <article class="layer-card">
+            <span class="layer-no">第二层</span>
+            <h3>工作方法</h3>
+            <p>调查研究、群众路线、批评与自我批评，解决的是信息从哪里来、方案如何修正、质量怎样闭环的问题。</p>
+            <div class="method-tags">
+              <span class="method-tag">调查研究</span>
+              <span class="method-tag">群众路线</span>
+              <span class="method-tag">批评与自我批评</span>
+            </div>
+          </article>
+          <article class="layer-card">
+            <span class="layer-no">第三层</span>
+            <h3>战略战术</h3>
+            <p>持久战略、集中兵力、星火燎原、统筹兼顾，负责把复杂任务拆成可推进、可积累、可取舍的行动路线。</p>
+            <div class="method-tags">
+              <span class="method-tag">持久战略</span>
+              <span class="method-tag">集中兵力</span>
+              <span class="method-tag">星火燎原</span>
+              <span class="method-tag">统筹兼顾</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="frame section reveal" id="weapons">
+      <span class="section-label">九大思想武器</span>
+      <h2 class="section-heading">把“会做事”升级为“会想事、会推进、会纠偏”。</h2>
+      <p class="section-intro">每一件武器都有明确的核心要义、原著出处和适用场景，它们组合起来，构成 AI Agent 的工作纪律。</p>
+      <div class="weapons-grid">
+        <article class="weapon-card">
+          <div class="weapon-no">01</div>
+          <div class="weapon-icon">⚔️</div>
+          <h3>矛盾分析法</h3>
+          <p class="weapon-keyword">核心要义：抓主要矛盾</p>
+          <p class="weapon-source">原著出处：《矛盾论》</p>
+          <p class="weapon-scenario">适用场景：复杂问题分析</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">02</div>
+          <div class="weapon-icon">🔄</div>
+          <h3>实践认识论</h3>
+          <p class="weapon-keyword">核心要义：实践 → 认识 → 再实践</p>
+          <p class="weapon-source">原著出处：《实践论》</p>
+          <p class="weapon-scenario">适用场景：方案验证与迭代</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">03</div>
+          <div class="weapon-icon">🔎</div>
+          <h3>调查研究</h3>
+          <p class="weapon-keyword">核心要义：没有调查就没有发言权</p>
+          <p class="weapon-source">原著出处：《反对本本主义》</p>
+          <p class="weapon-scenario">适用场景：决策前的信息收集</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">04</div>
+          <div class="weapon-icon">👥</div>
+          <h3>群众路线</h3>
+          <p class="weapon-keyword">核心要义：从群众中来，到群众中去</p>
+          <p class="weapon-source">原著出处：《关于领导方法的若干问题》</p>
+          <p class="weapon-scenario">适用场景：反馈整合与方案验证</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">05</div>
+          <div class="weapon-icon">🪞</div>
+          <h3>批评与自我批评</h3>
+          <p class="weapon-keyword">核心要义：惩前毖后，治病救人</p>
+          <p class="weapon-source">原著出处：《论联合政府》</p>
+          <p class="weapon-scenario">适用场景：工作审视与质量改进</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">06</div>
+          <div class="weapon-icon">⏳</div>
+          <h3>持久战略</h3>
+          <p class="weapon-keyword">核心要义：战略上藐视，战术上重视</p>
+          <p class="weapon-source">原著出处：《论持久战》</p>
+          <p class="weapon-scenario">适用场景：长期复杂任务规划</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">07</div>
+          <div class="weapon-icon">🎯</div>
+          <h3>集中兵力</h3>
+          <p class="weapon-keyword">核心要义：伤其十指不如断其一指</p>
+          <p class="weapon-source">原著出处：《中国革命战争的战略问题》</p>
+          <p class="weapon-scenario">适用场景：优先级决策与资源聚焦</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">08</div>
+          <div class="weapon-icon">🔥</div>
+          <h3>星火燎原</h3>
+          <p class="weapon-keyword">核心要义：建立根据地，不做流寇</p>
+          <p class="weapon-source">原著出处：《星星之火，可以燎原》</p>
+          <p class="weapon-scenario">适用场景：从零开始的发展策略</p>
+        </article>
+        <article class="weapon-card">
+          <div class="weapon-no">09</div>
+          <div class="weapon-icon">⚖️</div>
+          <h3>统筹兼顾</h3>
+          <p class="weapon-keyword">核心要义：调动一切积极因素</p>
+          <p class="weapon-source">原著出处：《论十大关系》</p>
+          <p class="weapon-scenario">适用场景：多目标平衡与权衡</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="frame section reveal" id="showcase">
+      <span class="section-label">展示示例</span>
+      <h2 class="section-heading">真实案例与社区分享</h2>
+      <p class="section-intro">这里收集了大家在使用求是 Skill 过程中的真实案例。欢迎在 <a href="https://github.com/HughYau/qiushi-skill/discussions" target="_blank" style="color: var(--color-primary); font-weight: bold; text-decoration: underline;">GitHub Discussions</a> 中分享你使用经验帮助项目改进！</p>
+      <div style="margin-top: 24px;">
+        <article style="background: var(--color-bg); border: 2px solid var(--color-primary); padding: 20px; box-shadow: 4px 4px 0 var(--color-primary-soft);">
+          <h3 style="margin: 0 0 10px; color: var(--color-primary); font-size: 1.25rem;">📖 <a href="https://mp.weixin.qq.com/s/bg5cgSAscy37T4gv9YJG0A" target="_blank" style="text-decoration: none;">分析外行指导内行问题</a></h3>
+          <p style="margin: 0; color: var(--color-muted); font-size: 0.95rem;">来自用户分享。</p>
+        </article>
+        <article style="margin-top: 14px; background: var(--color-bg); border: 2px solid var(--color-primary); padding: 20px; box-shadow: 4px 4px 0 var(--color-primary-soft);">
+          <h3 style="margin: 0 0 10px; color: var(--color-primary); font-size: 1.25rem;">🤖 <a href="https://github.com/mfkyddh/ZZZ-Simple-AI" target="_blank" style="text-decoration: none;">ZZZ 白话讲 AI —— 用“求是方法论”写一本零基础 AI 认知书</a></h3>
+          <p style="margin: 0; color: var(--color-muted); font-size: 0.95rem;">以“求是”方法论组织 AI 入门知识。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="frame section reveal" id="not">
+      <span class="section-label">澄清边界</span>
+      <p class="section-kicker">这不是什么</p>
+      <h2 class="section-heading">讲清方法论的边界，才能避免误读。</h2>
+      <p class="section-intro">本项目仅提炼经实践检验的方法论，将其转化为可执行的认知工具，以实现取法其上、用之于今，以期借前人之光，照当下之路。</p>
+      <div class="clarify-grid">
+        <article class="clarify-card">
+          <span class="clarify-index">其一</span>
+          <h3>这不是 Politics或者Propaganda</h3>
+          <p>这是 Methodology。教员思想中的哲学方法论可以用于指导任何需要分析问题和解决问题的场景。</p>
+        </article>
+        <article class="clarify-card">
+          <span class="clarify-index">其三</span>
+          <h3>这不是人格蒸馏</h3>
+          <p>作者认为，以skills本身的形式限制，大模型目前不可以、也不应被用来模拟人物具体人格，任何此类尝试都不可避免地流于失真。</p>
+        </article>
+        <article class="clarify-card">
+          <span class="clarify-index">其二</span>
+          <h3>这不是自动化工具箱</h3>
+          <p>它不会替你生成答案或直接给出最优解，而是提供一套约束思考过程的方法论框架。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="frame section reveal" id="starhistory">
+      <span class="section-label">Star History</span>
+    
+          <a class="star-link" href="https://www.star-history.com/?repos=HughYau%2Fqiushi-skill&type=date&legend=top-left" target="_blank" rel="noreferrer">
+            <img
+              src="https://api.star-history.com/chart?repos=HughYau/qiushi-skill&type=date&legend=top-left"
+              alt="求是 Skill Star History 图表"
+            >
+          </a>
+
+    </section>
+
+    <section class="frame section reveal" id="platforms">
+      <span class="section-label">平台支持</span>
+      <p class="section-kicker">多Client可接入</p>
+      <h2 class="section-heading">不把方法论锁死在单一工具里。</h2>
+      <p class="section-intro">
+        项目的核心资产是 `skills/`、`commands/` 和 `hooks/`。Client平台不同，接入方式不同，但方法论本身不依赖单一平台。
+      </p>
+      <div class="platforms-grid">
+        <article class="platform-card">
+          <span class="platform-chip">Claude Code</span>
+          <h3>插件安装 + 自动注入 + 命令入口</h3>
+          <p>完整支持插件目录、SessionStart 注入与命令文件，是当前最完整的一条接入路径。</p>
+          <ul class="platform-list">
+            <li>支持自动注入</li>
+            <li>支持手动命令</li>
+            <li>验证入口：`tests/validate.ps1`</li>
+          </ul>
+        </article>
+        <article class="platform-card">
+          <span class="platform-chip">Cursor</span>
+          <h3>元数据接入 + 命令文件 + 验证脚本</h3>
+          <p>支持元数据与 hook 配置识别，同时保留仓库内命令文件，方便在 IDE 场景下调用。</p>
+          <ul class="platform-list">
+            <li>支持元数据与 hook</li>
+            <li>支持手动命令</li>
+            <li>验证入口：`tests/validate.ps1`</li>
+          </ul>
+        </article>
+        <article class="platform-card">
+          <span class="platform-chip">Codex</span>
+          <h3>原生文档入口，不依赖插件壳</h3>
+          <p>通过 `.codex/INSTALL.md` 提供原生安装与接入说明，按Client能力选择命令层支持方式。</p>
+          <ul class="platform-list">
+            <li>安装入口：`.codex/INSTALL.md`</li>
+            <li>命令支持视Client能力而定</li>
+            <li>验证方式：按文档自检</li>
+          </ul>
+        </article>
+        <article class="platform-card">
+          <span class="platform-chip">OpenCode</span>
+          <h3>原生文档入口，不依赖插件壳</h3>
+          <p>通过 `.opencode/INSTALL.md` 提供接入说明，保持与核心方法论目录结构的一致性。</p>
+          <ul class="platform-list">
+            <li>安装入口：`.opencode/INSTALL.md`</li>
+            <li>命令支持视Client能力而定</li>
+            <li>验证方式：按文档自检</li>
+          </ul>
+        </article>
+      </div>
+      <p class="platform-note">除以上四个平台外，其他Client也可直接复用 `skills/` 与 `commands/`，只要它支持 system prompt 注入或手动指令加载。</p>
+    </section>
+
+    <div class="quote-divider reveal" aria-hidden="true">
+      <span>「下定决心，不怕牺牲，排除万难，去争取胜利。」</span>
+    </div>
+
+    <footer class="frame cta reveal">
+      <p>如果你觉得有帮助，就给仓库点一个 Star。</p>
+      <div class="cta-actions">
+        <a class="button button-primary" href="https://github.com/HughYau/qiushi-skill" target="_blank" rel="noreferrer">★ 给仓库加星</a>
+      </div>
+      <p class="footer-note">MIT License · GitHub Pages /docs 部署</p>
+    </footer>
+  </main>
+
+  <script>
+    const revealNodes = document.querySelectorAll('.reveal');
+    document.documentElement.classList.add('js-ready');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      revealNodes.forEach((node) => observer.observe(node));
+    } else {
+      revealNodes.forEach((node) => node.classList.add('is-visible'));
+    }
+  </script>
+</body>
+</html>
