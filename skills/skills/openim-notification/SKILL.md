@@ -82,6 +82,25 @@ Send notifications via OpenIM service to specified users.
 - **地址**：`http://192.168.0.27:10002`
 - **Admin账号**：`imAdmin` / `openIM123`
 
+## ZenTao 集成
+
+常用于将 ZenTao Bug/测试数据通过 OpenIM 推送给相关人员。
+
+**典型流程**：
+1. 从 ZenTao API 拉取 Bug/用例数据
+2. 整理统计信息
+3. 通过 OpenIM 发送给指定用户
+
+**ZenTao API**：
+- 地址: `http://192.168.0.28:9980/api.php/v1`
+- 产品 Bug: `GET /products/{productID}/bugs?page=1&limit=200`
+
+**ZenTao 已知用户**：
+| 姓名 | userID |
+|------|--------|
+| 石大卫 | 1965695380 |
+| 张文骏 | 9175393676 |
+
 ## Limitations
 
 - 仅支持文本消息（contentType: 101）

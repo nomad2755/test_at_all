@@ -149,6 +149,46 @@ zentao-integration/
 └── README.md
 ```
 
+### OpenIM 消息通知集成
+
+ZenTao Bug/测试用例变更时，可通过 OpenIM 自动通知相关人员。
+
+#### OpenIM 配置
+- **地址**: `http://192.168.0.27:10002`
+- **Admin**: `imAdmin` / `openIM123`
+- **Token**: `POST /auth/user_token` with `{"secret":"openIM123","userID":"imAdmin","platformID":1}`
+
+#### 发送消息
+```python
+# 发送 Bug 通知
+data = {
+    "sendID": "imAdmin",
+    "recvID": "<用户ID>",
+    "content": {"content": "Bug内容"},
+    "contentType": 101,
+    "sessionType": 1
+}
+```
+
+#### 已知用户
+| 姓名 | userID |
+|------|--------|
+| 石大卫 | 1965695380 |
+| 张文骏 | 9175393676 |
+
+### 典型工作流：Bug通知
+
+```python
+# 1. 获取 ZenTao Bug 列表
+bugs = api_get("/products/1/bugs?page=1&limit=200")
+
+# 2. 整理统计信息
+msg = f"📊 禅道Bug统计报告\n总Bug: {total}\n激活: {active}"
+
+# 3. 通过 OpenIM 发送
+openim_send("9175393676", msg)
+```
+
 ## 安全注意
 
 - Token 包含敏感信息，不要在日志中输出完整Token
