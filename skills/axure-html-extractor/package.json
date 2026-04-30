@@ -1,0 +1,6 @@
+{
+  "name": "axure-html-extractor",
+  "version": "1.0.0",
+  "description": "通过 curl 直接下载 Axure 导出的 HTML 文件，解析页面表单字段、业务规则，生成结构化需求文档",
+  "dependencies": {}
+}

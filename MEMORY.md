@@ -39,6 +39,18 @@
 - 子主题才是真正的独立步骤
 - 如果 desc 为空但 notes 有内容，用 notes 作为 desc 的备选
 
+### OpenIM 消息推送
+- **服务地址**: `http://192.168.0.27:10002`
+- **Admin账号**: `imAdmin` / `openIM123`
+- **Token 获取**: POST `/auth/user_token` with `{"secret":"openIM123","userID":"imAdmin","platformID":1}`
+- **发送消息**: POST `/msg/send_msg` with token
+- **contentType**: 101 (文本消息)
+- **content 格式**: `{"content": "消息文本"}` (注意是 `"Content"` 大写)
+- **sessionType**: 1 (单聊) / 2 (群聊)
+- **已知用户**:
+  - 石大卫: `1965695380`
+  - 张文骏: `9175393676`
+
 ### ZenTao 集成
 - **服务器**: http://192.168.0.28:9980
 - **账号**: shidawei / shidawei
@@ -142,6 +154,29 @@ POST /api.php/v1/projects/{项目ID}/executions
 - **内测邀请页面测试用例**: 15 个用例 (P0/P1/P2)
 - **测试流程规范文档**: `docs/测试工作流程标准规范_AI辅助版.md`
 
+### 2026-04-29 工作记录
+
+#### Jenkins 部署（成功）
+- **部署方式**: Docker (`jenkins/jenkins:lts`)
+- **公网访问**: https://a4bf8dd5965ce7b5-120-202-35-151.serveousercontent.com
+- **本地端口**: 8080 (Jenkins) / 50000 (Agent)
+- **初始管理员密码**: `225a9d7b69e44369ba1f5161a648731c`
+- **数据卷**: `/opt/jenkins_home`
+- **已安装插件**: 95 个
+- **特点**: 已安装中文本地化插件（localization-zh-cn）和暗色主题（dark-theme）
+
+#### whhnhy.com 后台系统
+- **地址**: https://whhnhy.com:8910
+- **子系统**: /knowledge/login (知识库登录)
+- **状态**: 仅内网访问，Linux 服务器无法直接访问
+- **后续**: 需通过 ngrok 或内网穿透方式解决
+
+#### JMeter 压测
+- **测试记录**: 50 请求，0 失败，P95=26ms，吞吐量 32.3 req/s
+- **结论**: 响应性能良好
+
+---
+
 ## 已安装 Skills 清单
 
 ### 测试相关技能 (工作区)
@@ -152,6 +187,7 @@ POST /api.php/v1/projects/{项目ID}/executions
 | extract-prototype-testcase | 原型提取测试用例 |
 | airtest-automation | AirTest 自动化测试 |
 | webapp-testing | Web 应用测试 |
+| openim-notification | OpenIM 消息推送 |
 
 ### 工具类技能 (工作区)
 | 技能名 | 描述 |
@@ -185,12 +221,12 @@ POST /api.php/v1/projects/{项目ID}/executions
 - [ ] 确认是否有待处理的测试任务
 
 ---
-*最后更新: 2026-04-27*
+*最后更新: 2026-04-30*
 
 ### ZenTao 集成
 - **服务器**: http://192.168.0.28:9980
 - **账号**: shidawei / shidawei
-- **Token**: 335bfce2adddecff7b3097534e93cf3e
+- **Token**: d22106bc19b08ebbcecebcbd79dc4338
 - **产品ID**: 1 (数字乡村v1.1)
 - **迭代ID**: 24 (邀请码专项)
 - **API 端点**: /api.php/v1
@@ -202,7 +238,7 @@ POST /api.php/v1/projects/{项目ID}/executions
 - **服务器**: http://192.168.0.28:9980
 - **API 端点**: /api.php/v1
 - **账号**: shidawei / shidawei
-- **Token**: 335bfce2adddecff7b3097534e93cf3e
+- **Token**: d22106bc19b08ebbcecebcbd79dc4338
 
 #### 产品与项目
 - **产品ID 1**: 数字乡村v1.1
@@ -298,4 +334,4 @@ POST /api.php/v1/projects/{项目ID}/executions
 - [ ] 确认是否有待处理的测试任务
 
 ---
-*最后更新: 2026-04-24*
+*最后更新: 2026-04-29*

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-禅道测试工作流 + 钉钉通知
-功能：创建测试用例 → 导入禅道 → 发送钉钉通知
+禅道测试工作流 + 通知
+支持 Open-IM 和钉钉通知
+
+功能：创建测试用例 → 导入禅道 → 发送 IM 通知
 """
 
 import json
@@ -18,136 +20,123 @@ ZENTAO_HEADERS = {
     "Content-Type": "application/json"
 }
 
-# 钉钉 Webhook（可通过环境变量覆盖）
-DINGTALK_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=YOUR_TOKEN"
-DINGTALK_SECRET = ""  # 如果安全设置是加签模式，填入 secret
+# Open-IM 配置（可通过环境变量覆盖）
+OPENIM_API_URL = "http://YOUR_OPENIM_SERVER:10000"
+OPENIM_TOKEN = "YOUR_IM_TOKEN"
 
 
-class DingTalkNotifier:
-    """钉钉通知器"""
+class OpenIMNotifier:
+    """
+    Open-IM 通知发送器
     
-    def __init__(self, webhook_url: str = None, secret: str = None):
-        self.webhook_url = webhook_url or DINGTALK_WEBHOOK
-        self.secret = secret or DINGTALK_SECRET
+    使用 Open-IM 的 Webhook 接口发送消息
+    API: http://IP:10000/callback/send_msg
+    """
     
-    def send_markdown(self, title: str, text: str) -> bool:
+    def __init__(self, api_url: str = None, im_token: str = None):
+        self.api_url = (api_url or OPENIM_API_URL).rstrip('/')
+        self.callback_url = f"{self.api_url}/callback/send_msg"
+        self.im_token = im_token or OPENIM_TOKEN
+    
+    def send_text(self, sender_id: str, recv_id: str, text: str) -> bool:
         """
-        发送 Markdown 格式消息到钉钉群
+        发送文本消息
         
         Args:
-            title: 消息标题
-            text: Markdown 格式内容
+            sender_id: 发送者 ID
+            recv_id: 接收者 ID (用户ID或群ID)
+            text: 文本内容
             
         Returns:
             bool: 发送是否成功
         """
+        import base64
+        
         payload = {
-            "msgtype": "markdown",
-            "markdown": {
-                "title": title,
-                "text": text
+            "callbackCommand": "sendMsg",
+            "imToken": self.im_token,
+            "sendMsgReq": {
+                "senderId": sender_id,
+                "recvId": recv_id,
+                "content": base64.b64encode(text.encode('utf-8')).decode('utf-8'),
+                "contentType": 1,  # 1=text, 2=image, etc.
+                "options": {
+                    "callbackTimeout": 10
+                }
             }
         }
         
-        # 安全设置：关键词模式
-        # 在 text 中包含"测试报告"关键词
-        
         try:
-            response = requests.post(self.webhook_url, json=payload, timeout=10)
+            response = requests.post(self.callback_url, json=payload, timeout=15)
             result = response.json()
             
-            if result.get("errcode") == 0:
-                print(f"✅ 钉钉通知发送成功")
+            if result.get("errCode") == 0:
+                print(f"✅ Open-IM 消息发送成功")
                 return True
             else:
-                print(f"❌ 钉钉通知失败: {result.get('errmsg')}")
+                print(f"❌ Open-IM 消息发送失败: {result.get('errMsg')}")
                 return False
         except Exception as e:
-            print(f"❌ 钉钉通知异常: {e}")
+            print(f"❌ Open-IM 消息发送异常: {e}")
             return False
     
-    def send_test_report(self, task_title: str, task_id: str, 
+    def send_test_report(self, sender_id: str, recv_id: str,
+                        task_title: str, task_id: str,
                         total_cases: int, created_cases: int,
-                        report_summary: str = "") -> bool:
+                        report_summary: str = "",
+                        zentao_url: str = "http://192.168.0.28:9980") -> bool:
         """
-        发送测试报告到钉钉群
-        
-        Args:
-            task_title: 禅道任务标题
-            task_id: 任务 ID
-            total_cases: 用例总数
-            created_cases: 已创建用例数
-            report_summary: AI 生成的报告摘要
+        发送测试报告到 Open-IM
         """
-        zentao_url = f"http://192.168.0.28:9980"
+        content = f"""【测试报告】
+
+📌 任务: {task_title}
+🔗 禅道: {zentao_url}/task-view-{task_id}.html
+
+📊 用例统计:
+• 总数: {total_cases}
+• 已创建: {created_cases}
+
+📝 摘要: {report_summary or '测试用例已成功创建'}
+
+⏰ {datetime.now().strftime('%Y-%m-%d %H:%M')}"""
         
-        markdown_content = f"""# 测试报告 📋
-
-## 任务信息
-- **任务标题**: {task_title}
-- **禅道任务**: [ID: {task_id}]({zentao_url}/task-view-{task_id}.html)
-- **执行时间**: {datetime.now().strftime('%Y-%m-%d %H:%M')}
-
-## 测试用例统计
-| 类型 | 数量 |
-|------|------|
-| 用例总数 | {total_cases} |
-| 已创建 | {created_cases} |
-
-## 报告摘要
-{report_summary or '测试用例已成功创建并导入禅道。'}
-
----
-🤖 由测试助手自动生成
-"""
-        
-        return self.send_markdown("测试报告", markdown_content)
+        return self.send_text(sender_id, recv_id, content)
     
-    def send_bug_report(self, bug_id: int, title: str, 
-                       severity: str, steps: str) -> bool:
+    def send_bug_notification(self, sender_id: str, recv_id: str,
+                             bug_id: int, bug_title: str,
+                             severity: str, desc: str,
+                             zentao_url: str = "http://192.168.0.28:9980") -> bool:
         """
-        发送 Bug 报告到钉钉群
+        发送 Bug 通知到 Open-IM
         """
-        zentao_url = f"http://192.168.0.28:9980"
+        severity_map = {"1": "🔴 致命", "2": "🟠 严重", "3": "🟡 一般", "4": "🔵 优化"}
         
-        severity_emoji = {
-            "1": "🔴",
-            "2": "🟠", 
-            "3": "🟡",
-            "4": "🔵"
-        }.get(str(severity), "⚪")
+        content = f"""🐛 【新建Bug】
+
+🔖 ID: {bug_id}
+📛 标题: {bug_title}
+⚠️ 严重程度: {severity_map.get(severity, severity)}
+🔗 禅道: {zentao_url}/bug-view-{bug_id}.html
+
+📄 描述: {desc}
+
+⏰ {datetime.now().strftime('%Y-%m-%d %H:%M')}"""
         
-        markdown_content = f"""# 🐛 新建 Bug
-
-## Bug 信息
-- **Bug ID**: [{bug_id}]({zentao_url}/bug-view-{bug_id}.html)
-- **标题**: {title}
-- **严重程度**: {severity_emoji} {'致命' if severity == '1' else '严重' if severity == '2' else '一般' if severity == '3' else '优化'}
-
-## 复现步骤
-{steps}
-
----
-🤖 由测试助手自动创建
-"""
-        
-        return self.send_markdown(f"🐛 新建 Bug: {title[:30]}...", markdown_content)
+        return self.send_text(sender_id, recv_id, content)
 
 
-class ZenTaoDingTalkWorkflow:
+class ZenTaoOpenIMWorkflow:
     """
-    禅道 + 钉钉 工作流
-    整合测试用例创建和钉钉通知
+    禅道 + Open-IM 工作流
+    整合测试用例创建和内部 IM 通知
     """
     
-    def __init__(self, zentao_token: str = None, dingtalk_webhook: str = None):
-        self.zentao_token = zentao_token or ZENTAO_TOKEN
+    def __init__(self, openim_api_url: str = None, openim_token: str = None):
+        self.zentao_token = ZENTAO_TOKEN
         self.zentao_base = ZENTAO_BASE
-        self.headers = {
-            "Token": self.zentao_token,
-            "Content-Type": "application/json"
-        }
-        self.dingtalk = DingTalkNotifier(webhook_url=dingtalk_webhook)
+        self.headers = ZENTAO_HEADERS
+        self.openim = OpenIMNotifier(api_url=openim_api_url, im_token=openim_token)
     
     def create_test_case(self, title: str, pri: int = 3, 
                         steps: List[Dict[str, str]] = None,
@@ -231,9 +220,10 @@ class ZenTaoDingTalkWorkflow:
     def run(self, task_title: str, task_id: str,
             cases: List[Dict[str, Any]] = None,
             report_summary: str = "",
-            product_id: int = 2) -> Dict[str, Any]:
+            product_id: int = 2,
+            recv_id: str = "user001") -> Dict[str, Any]:
         """
-        运行完整工作流：创建用例 → 钉钉通知
+        运行完整工作流：创建用例 → Open-IM 通知
         
         Args:
             task_title: 禅道任务标题
@@ -241,6 +231,7 @@ class ZenTaoDingTalkWorkflow:
             cases: 测试用例列表
             report_summary: 报告摘要
             product_id: 产品 ID
+            recv_id: Open-IM 接收者 ID
             
         Returns:
             工作流执行结果
@@ -261,9 +252,11 @@ class ZenTaoDingTalkWorkflow:
         else:
             create_result = {"total": 0, "success": 0, "failed": 0}
         
-        # 2. 发送钉钉通知
-        print("\n📤 正在发送钉钉通知...")
-        notify_result = self.dingtalk.send_test_report(
+        # 2. 发送 Open-IM 通知
+        print("\n📤 正在发送 Open-IM 通知...")
+        notified = self.openim.send_test_report(
+            sender_id="robot001",  # 可配置为机器人 ID
+            recv_id=recv_id,
             task_title=task_title,
             task_id=task_id,
             total_cases=create_result["total"],
@@ -276,20 +269,21 @@ class ZenTaoDingTalkWorkflow:
         print(f"{'='*50}")
         
         return {
-            "success": create_result["success"] > 0 and notify_result,
+            "success": create_result["success"] > 0 and notified,
             "cases_created": create_result["success"],
             "cases_failed": create_result["failed"],
-            "dingtalk_notified": notify_result
+            "im_notified": notified
         }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="禅道测试工作流 + 钉钉通知")
+    parser = argparse.ArgumentParser(description="禅道测试工作流 + Open-IM 通知")
     parser.add_argument("--task-id", type=str, required=True, help="禅道任务 ID")
     parser.add_argument("--task-title", type=str, required=True, help="任务标题")
     parser.add_argument("--case-count", type=int, default=5, help="生成用例数量")
     parser.add_argument("--product-id", type=int, default=2, help="产品 ID")
-    parser.add_argument("--webhook", type=str, help="钉钉 Webhook URL")
+    parser.add_argument("--openim-url", type=str, help="Open-IM API 地址")
+    parser.add_argument("--recv", type=str, default="user001", help="接收者 ID")
     
     args = parser.parse_args()
     
@@ -304,11 +298,12 @@ def main():
         for i in range(1, args.case_count + 1)
     ]
     
-    workflow = ZenTaoDingTalkWorkflow(dingtalk_webhook=args.webhook)
+    workflow = ZenTaoOpenIMWorkflow(openim_api_url=args.openim_url)
     result = workflow.run(
         task_title=args.task_title,
         task_id=args.task_id,
-        cases=sample_cases
+        cases=sample_cases,
+        recv_id=args.recv
     )
     
     print(f"\n执行结果: {json.dumps(result, ensure_ascii=False, indent=2)}")
