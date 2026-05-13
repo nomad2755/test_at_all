@@ -24,3 +24,17 @@ test_cases/
 
 # Jenkins home (if exists)
 jenkins_home/
+
+# Test data (do not push)
+test_cases/
+test_scripts/
+bug_screenshots/*.png
+mindmap*.png
+public_screenshots/
+screenshots/
+jmeter.log
+upload*.png
+*.xlsx
+config/*_state.json
+config/jenkins_monitor_state.json
+config/urgent_bug_state.json
