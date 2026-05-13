@@ -19,7 +19,7 @@ import time
 
 # ZenTao API配置
 BASE_URL = "http://192.168.0.28:9980/api.php/v1"
-TOKEN = "335bfce2adddecff7b3097534e93cf3e"
+TOKEN = "99f5636c120167a9eacc7563e90b7dbf"
 PRODUCT_ID = 2  # 使用产品2
 
 def get_token():

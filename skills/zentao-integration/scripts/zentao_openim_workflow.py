@@ -183,7 +183,7 @@ class OpenIMClient:
 # ============ 禅道 + Open-IM 工作流 ============
 
 ZENTAO_BASE = "http://192.168.0.28:9980/api.php/v1"
-ZENTAO_TOKEN = "cf2da27b8b734b419352d844bc451a14"
+ZENTAO_TOKEN = "99f5636c120167a9eacc7563e90b7dbf"
 ZENTAO_HEADERS = {
     "Token": ZENTAO_TOKEN,
     "Content-Type": "application/json"

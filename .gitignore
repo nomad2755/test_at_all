@@ -1,0 +1,26 @@
+# Daily memory logs - keep locally only
+memory/
+
+# Heartbeat state - private
+HEARTBEAT.md
+
+# Logs
+*.log
+logs/
+
+# Python cache
+__pycache__/
+*.pyc
+.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test data
+test_cases/
+*.xlsx
+*.zip
+
+# Jenkins home (if exists)
+jenkins_home/

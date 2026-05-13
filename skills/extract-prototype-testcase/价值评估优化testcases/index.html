@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>价值评估优化 - 测试用例</title>
+<style>
+body { font-family: -apple-system, "Microsoft YaHei", sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+h1 { color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+h2 { color: #555; margin-top: 30px; }
+h3 { color: #666; }
+.p0 { border-left: 4px solid #f44336; padding-left: 15px; margin: 20px 0; }
+.p1 { border-left: 4px solid #ff9800; padding-left: 15px; margin: 20px 0; }
+.p2 { border-left: 4px solid #2196F3; padding-left: 15px; margin: 20px 0; }
+.case { background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 5px; }
+.case-id { font-weight: bold; color: #4CAF50; }
+.pri { background: #4CAF50; color: white; padding: 2px 8px; border-radius: 3px; font-size: 12px; }
+.pri-p1 { background: #ff9800; }
+.pri-p2 { background: #2196F3; }
+.step { margin: 5px 0; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+th { background: #4CAF50; color: white; }
+tr:nth-child(even) { background: #f9f9f9; }
+</style>
+</head>
+<body>
+
+<h1>📋 价值评估优化 - 测试用例</h1>
+
+<p><strong>模块:</strong> 价值评估优化 | <strong>用例总数:</strong> 12 | <strong>生成时间:</strong> 2026-04-30</p>
+
+<h2>功能概述</h2>
+<p>价值评估优化模块主要用于评估用户提交的出行票据/记录的价值，包括火车票、机票、打车发票、驾驶证、步行记录、汽车票等多种类型。</p>
+
+<h2>P0 - 核心功能测试用例</h2>
+
+<div class="case p0">
+<p><span class="case-id">TC_VALUE_001</span> <span class="pri">P0</span> 火车票票据识别与价值评估</p>
+<p><strong>前置条件:</strong> 用户已登录系统，进入价值评估页面</p>
+<p><strong>操作步骤:</strong></p>
+<div class="step">1. 上传火车票图片（01_火车票.png）</div>
+<div class="step">2. 点击"开始评估"按钮</div>
+<div class="step">3. 等待系统处理</div>
+<p><strong>预期结果:</strong></p>
+<div class="step">• 系统正确识别火车票信息（出发地、目的地、日期、票价）</div>
+<div class="step">• 显示价值评估结果</div>
+<div class="step">• 评估金额与票据面额一致</div>
+</div>
+
+<div class="case p0">
+<p><span class="case-id">TC_VALUE_002</span> <span class="pri">P0</span> 机票票据识别与价值评估</p>
+<p><strong>前置条件:</strong> 用户已登录系统，进入价值评估页面</p>
+<p><strong>操作步骤:</strong></p>
+<div class="step">1. 上传机票图片（02_机票.png）</div>
+<div class="step">2. 点击"开始评估"按钮</div>
+<div class="step">3. 等待系统处理</div>
+<p><strong>预期结果:</strong> 系统正确识别机票信息，显示价值评估结果</p>
+</div>
+
+<div class="case p0">
+<p><span class="case-id">TC_VALUE_003</span> <span class="pri">P0</span> 多条出行记录批量评估</p>
+<p><strong>前置条件:</strong> 用户已登录系统，进入价值评估页面</p>
+<p><strong>操作步骤:</strong></p>
+<div class="step">1. 上传包含多条出行记录的图片（07_多条出行记录.png）</div>
+<div class="step">2. 点击"开始评估"按钮</div>
+<p><strong>预期结果:</strong></p>
+<div class="step">• 系统正确识别并拆分多条记录</div>
+<div class="step">• 每条记录单独评估</div>
+<div class="step">• 显示总价值</div>
+</div>
+
+<h2>P1 - 边界场景测试用例</h2>
+
+<div class="case p1">
+<p><span class="case-id">TC_VALUE_004</span> <span class="pri pri-p1">P1</span> 不包含地点的美食图片评估</p>
+<p><strong>操作步骤:</strong> 上传美食图片（08_不含地点_美食.png）→ 点击"开始评估"</p>
+<p><strong>预期结果:</strong> 系统提示"无法识别有效出行票据"，不进行价值评估</p>
+</div>
+
+<div class="case p1">
+<p><span class="case-id">TC_VALUE_005</span> <span class="pri pri-p1">P1</span> 不合规内容检测</p>
+<p><strong>操作步骤:</strong> 上传不合规内容图片（09_不合规内容.png）→ 点击"开始评估"</p>
+<p><strong>预期结果:</strong> 系统拒绝评估，提示"上传内容不符合规范"</p>
+</div>
+
+<div class="case p1">
+<p><span class="case-id">TC_VALUE_006</span> <span class="pri pri-p1">P1</span> 驾驶证识别</p>
+<p><strong>操作步骤:</strong> 上传驾驶证图片（04_驾驶证.png）→ 点击"开始评估"</p>
+<p><strong>预期结果:</strong> 系统正确识别驾驶证信息，显示相应评估结果</p>
+</div>
+
+<h2>P2 - 异常场景测试用例</h2>
+
+<div class="case p2">
+<p><span class="case-id">TC_VALUE_007</span> <span class="pri pri-p2">P2</span> 步行记录识别</p>
+<p><strong>操作步骤:</strong> 上传步行记录截图（05_步行记录.png）→ 点击"开始评估"</p>
+<p><strong>预期结果:</strong> 系统正确识别步行记录，根据步数或距离评估价值</p>
+</div>
+
+<div class="case p2">
+<p><span class="case-id">TC_VALUE_008</span> <span class="pri pri-p2">P2</span> 汽车票识别</p>
+<p><strong>操作步骤:</strong> 上传汽车票图片（06_汽车票.png）→ 点击"开始评估"</p>
+<p><strong>预期结果:</strong> 系统正确识别汽车票信息，显示价值评估结果</p>
+</div>
+
+<div class="case p2">
+<p><span class="case-id">TC_VALUE_009</span> <span class="pri pri-p2">P2</span> 打车发票识别</p>
+<p><strong>操作步骤:</strong> 上传打车发票图片（03_打车发票.png）→ 点击"开始评估"</p>
+<p><strong>预期结果:</strong> 系统正确识别打车行程信息，显示里程和价值评估</p>
+</div>
+
+<h2>兼容性测试</h2>
+
+<div class="case p1">
+<p><span class="case-id">TC_VALUE_010</span> <span class="pri pri-p1">P1</span> 不同图片格式兼容性</p>
+<p><strong>操作:</strong> 准备 PNG、JPG、JPEG 格式火车票图片，分别上传测试</p>
+<p><strong>预期:</strong> 所有格式均可正常识别，评估结果一致</p>
+</div>
+
+<div class="case p2">
+<p><span class="case-id">TC_VALUE_011</span> <span class="pri pri-p2">P2</span> 图片尺寸兼容性</p>
+<p><strong>操作:</strong> 上传不同尺寸的票据图片（小图/大图/长图）</p>
+<p><strong>预期:</strong> 系统均可正常处理，不出现图片变形或识别错误</p>
+</div>
+
+<h2>性能测试</h2>
+
+<div class="case p1">
+<p><span class="case-id">TC_VALUE_012</span> <span class="pri pri-p1">P1</span> 响应时间测试</p>
+<p><strong>操作:</strong> 上传单张火车票图片，记录从点击"评估"到显示结果的时间</p>
+<p><strong>预期:</strong> 响应时间 ≤ 3秒</p>
+</div>
+
+<h2>测试数据清单</h2>
+<table>
+<tr><th>序号</th><th>文件名</th><th>描述</th></tr>
+<tr><td>1</td><td>01_火车票.png</td><td>标准火车票</td></tr>
+<tr><td>2</td><td>02_机票.png</td><td>标准机票</td></tr>
+<tr><td>3</td><td>03_打车发票.png</td><td>打车行程发票</td></tr>
+<tr><td>4</td><td>04_驾驶证.png</td><td>驾驶证图片</td></tr>
+<tr><td>5</td><td>05_步行记录.png</td><td>步行运动记录</td></tr>
+<tr><td>6</td><td>06_汽车票.png</td><td>长途汽车票</td></tr>
+<tr><td>7</td><td>07_多条出行记录.png</td><td>包含多条记录的图片</td></tr>
+<tr><td>8</td><td>08_不含地点_美食.png</td><td>不合规样本-美食</td></tr>
+<tr><td>9</td><td>09_不合规内容.png</td><td>不合规内容</td></tr>
+</table>
+
+</body>
+</html>

@@ -78,7 +78,7 @@ print(result)
 
 ### ZenTao API
 - **Base URL**: `http://192.168.0.28:9980/api.php/v1`
-- **Token**: `cf2da27b8b734b419352d844bc451a14`
+- **Token**: `99f5636c120167a9eacc7563e90b7dbf`
 
 ### 钉钉 Webhook
 - **URL**: `https://oapi.dingtalk.com/robot/send`

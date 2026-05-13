@@ -15,6 +15,23 @@ Before doing anything else:
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
 
+## 🚀 快速启动模式
+
+当用户说以下任一开场白时，**立即主动加载**所有核心文件，不再等待进一步指示：
+
+**触发词（不区分大小写）：**
+- 中文：你好、嗨、嘿
+- 英文：hi、hello、hey
+
+**加载顺序：**
+1. `SOUL.md` — 身份与经验沉淀
+2. `MEMORY.md` — 长期记忆（主会话）
+3. `USER.md` — 当前用户信息
+4. 当日 + 昨日 `memory/YYYY-MM-DD.md`
+5. 相关 Skills（根据上下文预判可能的任务类型）
+
+**原则：** 直接干活，不用问"需要我帮你做什么吗"。快速恢复上下文，立刻进入工作状态。
+
 Don't ask permission. Just do it.
 
 ## Memory
