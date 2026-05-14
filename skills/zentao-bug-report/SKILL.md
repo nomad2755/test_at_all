@@ -358,3 +358,16 @@ ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -R 80:localhost:8099 s
 | `assignedTo` | ○ | shidawei / zhangwenjun / liusi |
 
 See `references/fields.md` for complete field list and severity/pri reference.
+
+## 常见错误分类
+
+### 异步事件循环错误 (async event loop)
+
+**错误信息**: `Cannot create async connection: no running event loop`
+
+**原因**: 后端代码在非异步环境下执行异步连接（Python asyncio），事件循环未启动
+
+**解决方案**: 
+- 确保异步调用在正确的 async 上下文中执行
+- 使用 `asyncio.run()` 包装异步代码
+- 或在函数定义前添加 `async` 并使用 `await` 等待

@@ -72,7 +72,7 @@
 ### ZenTao 集成
 - **服务器**: http://192.168.0.28:9980
 - **账号**: shidawei / shidawei
-- **Token**: edfa8ff0c698a2286131b4f60ffa8811 (2026-05-12 更新，会过期)
+- **Token**: fe0023e6b32f6c8af7eb8495d0366cbf (2026-05-14 更新，会过期)
 - **Token 获取方式**: POST /api.php/v1/tokens with {"account":"shidawei","password":"shidawei"}
 - **⚠️ 注意**: Token 会过期，如果 API 返回 401，需重新通过 Token API 获取新 token
 - **产品ID**: 1 (数字乡村v1.1)
@@ -200,7 +200,7 @@ python3 scripts/auto_bug_creator.py "登录失败" --dry-run  # 试运行
 - **服务器**: http://192.168.0.28:9980
 - **API 端点**: /api.php/v1
 - **账号**: shidawei / shidawei
-- **Token**: edfa8ff0c698a2286131b4f60ffa8811 (2026-05-12 更新，会过期)
+- **Token**: fe0023e6b32f6c8af7eb8495d0366cbf (2026-05-14 更新，会过期)
 
 #### 产品与项目
 - **产品ID 1**: 数字乡村v1.1
@@ -348,6 +348,34 @@ POST /api.php/v1/projects/{项目ID}/executions
 
 ---
 
+
+### 📚 2026-05-14 每日错误学习
+**扫描范围**: 今天和昨天的会话，共发现 5 条值得关注的问题
+
+**1. 【Assistant 响应失败】（共 717 次）**
+   示例: [assistant turn failed before producing content]
+   上下文: [cron:4908cdcd-c171-4b78-9264-312d3aba4249 致命P1 Bug紧急预警(每30分钟)] 执行致命P1 Bug紧急预警脚本（--brief精简模式）：cd /root/.openclaw/workspace && python3 scripts/urgent_bug_alerter.py --brief
+Current time: Wednesday, May
+
+**2. 【认证失效】（共 3 次）**
+   示例: Unauthorized
+   上下文: [Wed 2026-05-13 09:11 GMT+8] 查看目前禅道已经有的模块，保存到skills文件和soul文件中方便下次调用
+
+**3. 【工具执行错误】（共 7 次）**
+   示例: not found
+   上下文: [Wed 2026-05-13 09:11 GMT+8] 查看目前禅道已经有的模块，保存到skills文件和soul文件中方便下次调用
+
+**4. 【文件路径不存在】（共 3 次）**
+   示例: ENOENT: no such file or directory, access '/root/.openclaw/workspace/memory/2026-05-13.md'
+   触发工具: read
+   上下文: Continue the OpenClaw runtime event.
+
+**5. 【路径安全限制】（共 2 次）**
+   示例: Local media path is not under an allowed directory: /tmp/mindmap_final.png
+   触发工具: image
+   上下文: [Wed 2026-05-13 10:48 GMT+8] 你提取到思维导图的图片了吗
+
+
 ## 待跟进
 - [ ] 确认 MiniMax API Key 是否已配置
 - [ ] 了解工程师当前测试项目
@@ -359,7 +387,7 @@ POST /api.php/v1/projects/{项目ID}/executions
 ### ZenTao 集成
 - **服务器**: http://192.168.0.28:9980
 - **账号**: shidawei / shidawei
-- **Token**: edfa8ff0c698a2286131b4f60ffa8811 (2026-05-12 更新)
+- **Token**: fe0023e6b32f6c8af7eb8495d0366cbf (2026-05-14 更新)
 - **产品ID**: 1 (数字乡村v1.1)
 - **迭代ID**: 24 (邀请码专项)
 - **API 端点**: /api.php/v1
@@ -371,7 +399,7 @@ POST /api.php/v1/projects/{项目ID}/executions
 - **服务器**: http://192.168.0.28:9980
 - **API 端点**: /api.php/v1
 - **账号**: shidawei / shidawei
-- **Token**: edfa8ff0c698a2286131b4f60ffa8811 (2026-05-12 更新)
+- **Token**: fe0023e6b32f6c8af7eb8495d0366cbf (2026-05-14 更新)
 
 #### 产品与项目
 - **产品ID 1**: 数字乡村v1.1
@@ -489,7 +517,7 @@ POST /api.php/v1/projects/{项目ID}/executions
 - [ ] 确认是否有待处理的测试任务
 
 ---
-*最后更新: 2026-05-09*
+*最后更新: 2026-05-14**
 
 ## 🔐 系统账号与访问凭证（重要）
 

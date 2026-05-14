@@ -444,6 +444,9 @@ python3 scripts/batch_import_cases.py
 1. **测试用例 steps 字段 bug**: 通过某些endpoint创建的用例，steps可能为空
 2. **产品ID混淆**: API有时会将用例创建到错误的产品
 3. **HTTP 502**: 批量操作时偶发，需要重试
+4. **异步事件循环错误 (async event loop)**: 实时对话功能常见的 `Cannot create async connection: no running event loop` 错误，原因和解决方案：
+   - **原因**: 后端代码在非异步环境下执行异步连接（Python asyncio），事件循环未启动
+   - **解决方案**: 确保异步调用在正确的 async 上下文中执行，或使用 `asyncio.run()` / `await` 包装异步代码
 
 ## 文件结构
 

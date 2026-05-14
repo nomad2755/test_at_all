@@ -95,9 +95,10 @@ _你不是聊天机器人。你是测试工程师的专业助手。_
 18. **Serveo URL 非静态**：每次执行 `ssh -R 80:localhost:8099 serveo.net` 都会生成不同的 URL，旧 URL 重启后立即失效；不要依赖之前保存的 Serveo URL
 19. **Serveo 进程管理**：用 `pkill -f serveo.net` 可能误杀其他相关进程；不要用 exec 杀掉 serveo 进程，会导致 exec 本身被 SIGTERM；正确做法：直接启动新 tunnel，不杀旧进程（允许多个并存）
 20. **Flask URL 编码**：中文文件名需要 URL 编码才能正确访问（`zht_ui_%E5%88%87%E6%8D%A2...`），Flask 中访问中文名文件需 urllib.parse.quote 编码；建议截图文件用纯 ASCII 命名避免编码问题
-21. **ZenTao Token 过期**：Token 会过期，API 返回 401 时需要重新通过 `POST /tokens` 获取；当前 token `edfa8ff0c698a2286131b4f60ffa8811`（2026-05-12 更新）
+21. **ZenTao Token 过期**：Token 会过期，API 返回 401 时需要重新通过 `POST /tokens` 获取；当前 token `fe0023e6b32f6c8af7eb8495d0366cbf`（2026-05-14 更新）
 22. **ZenTao 模块创建（Playwright）**：通过 `tree-browse-{productID}-bug-{parentID}-0-qa.html` 页面创建模块；需要先登录 ZenTao Web，通过 Playwright 操作隐藏表单；模块输入框 `input[name="modules[]"]` 初始只有几个，需要点击 `.btn-add` 添加行；用 JS 赋值 `frame.evaluate()` + `dispatchEvent` 填充输入框，再 JS 点击 `button[type="submit"]` 提交；不能直接用 Playwright 的 `fill()` 因为元素初始不可见；创建后 reload 页面确认 module_id；API POST `/tree-manageChild-{productID}-bug.html` 不适用于有权限控制的模块管理页面（返回重定向到登录页）
 23. **ZenTao 模块 ID 连锁反应**：创建 Bug 时如果不知道 module_id，先创建一个测试 Bug，再通过 `GET /products/1/bugs?module=<id>` 反查；module=0 时查全部，再按名称筛选；数据中台模块树（product=1, type=bug）已创建，可直接使用
+24. **异步事件循环错误**：实时对话功能常见的 `Cannot create async connection: no running event loop` 错误；原因：后端代码在非异步环境下执行异步连接（Python asyncio），事件循环未启动；解决方案：确保异步调用在正确的 async 上下文中执行，或使用 `asyncio.run()` / `await` 包装异步代码
 
 ### 📊 数据中台模块 ID 映射（2026-05-12 实测确认）
 
@@ -297,7 +298,7 @@ _这个文件是你的。要随着你学到的东西更新它。_
 
 | 系统 | 地址 | 账号 | 密码 | 备注 |
 |------|------|------|------|------|
-| ZenTao | http://192.168.0.28:9980 | shidawei | shidawei | API Token: edfa8ff0c698a2286131b4f60ffa8811 |
+| ZenTao | http://192.168.0.28:9980 | shidawei | shidawei | API Token: fe0023e6b32f6c8af7eb8495d0366cbf |
 | Jenkins | http://192.168.0.26:10240 | shidw | 178178Shi | 本服务器: 192.168.0.68 |
 | OpenIM | http://192.168.0.27:10002 | imAdmin | openIM123 | 消息推送服务 |
 
@@ -379,4 +380,31 @@ data = json.loads(page.inner_text('body'))
 
 ---
 
-*最后更新: 2026-05-11*
+*最后更新: 2026-05-14**
+
+### 📚 2026-05-14 每日错误学习
+**扫描范围**: 今天和昨天的会话，共发现 5 条值得关注的问题
+
+**1. 【Assistant 响应失败】（共 717 次）**
+   示例: [assistant turn failed before producing content]
+   上下文: [cron:4908cdcd-c171-4b78-9264-312d3aba4249 致命P1 Bug紧急预警(每30分钟)] 执行致命P1 Bug紧急预警脚本（--brief精简模式）：cd /root/.openclaw/workspace && python3 scripts/urgent_bug_alerter.py --brief
+Current time: Wednesday, May
+
+**2. 【认证失效】（共 3 次）**
+   示例: Unauthorized
+   上下文: [Wed 2026-05-13 09:11 GMT+8] 查看目前禅道已经有的模块，保存到skills文件和soul文件中方便下次调用
+
+**3. 【工具执行错误】（共 7 次）**
+   示例: not found
+   上下文: [Wed 2026-05-13 09:11 GMT+8] 查看目前禅道已经有的模块，保存到skills文件和soul文件中方便下次调用
+
+**4. 【文件路径不存在】（共 3 次）**
+   示例: ENOENT: no such file or directory, access '/root/.openclaw/workspace/memory/2026-05-13.md'
+   触发工具: read
+   上下文: Continue the OpenClaw runtime event.
+
+**5. 【路径安全限制】（共 2 次）**
+   示例: Local media path is not under an allowed directory: /tmp/mindmap_final.png
+   触发工具: image
+   上下文: [Wed 2026-05-13 10:48 GMT+8] 你提取到思维导图的图片了吗
+
