@@ -29,9 +29,11 @@ ZENDAO_URL = "http://192.168.0.28:9980/api.php/v1"
 ZENDAO_TOKEN = "edfa8ff0c698a2286131b4f60ffa8811"  # 2026-05-12 更新
 
 # 数字资产管理平台配置（截图上传）
-WHHNHY_URL = "https://www.whhnhy.com:8966"
-UPLOAD_API = f"{WHHNHY_URL}/admin-api/infra/file/upload"
-LOGIN_API = f"{WHHNHY_URL}/admin/login"
+WHHNHY_PROD_URL = "https://www.whhnhy.com:8966"
+WHHNHY_TEST_URL = "https://www.whhnhy.com:38868"
+UPLOAD_PROD_API = f"{WHHNHY_PROD_URL}/admin-api/infra/file/upload"
+UPLOAD_TEST_API = f"{WHHNHY_TEST_URL}/admin-api/infra/file/upload"
+LOGIN_API = f"{WHHNHY_PROD_URL}/admin/login"
 UPLOAD_ACCOUNT = "admin"
 UPLOAD_PASSWORD = "Szxc@2024"
 
@@ -404,9 +406,10 @@ def get_zentao_token():
 
 
 
-def get_upload_token_and_cookies():
+def get_upload_token_and_cookies(base_url):
     """
     使用 Playwright 登录数字资产管理平台，获取 token 和 cookies
+    base_url: 平台地址，如 https://www.whhnhy.com:8966 或 https://www.whhnhy.com:38868
     返回: (access_token, cookie_str)
     """
     try:
@@ -414,6 +417,9 @@ def get_upload_token_and_cookies():
     except ImportError:
         print("❌ 需要安装 playwright: pip install playwright && playwright install chromium")
         return None, None
+
+    login_api = f"{base_url}/admin/login"
+    file_page = f"{base_url}/admin/infra/file/file"
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
@@ -424,7 +430,7 @@ def get_upload_token_and_cookies():
         page = context.new_page()
 
         try:
-            page.goto(LOGIN_API, timeout=20000, wait_until='domcontentloaded')
+            page.goto(login_api, timeout=20000, wait_until='domcontentloaded')
             page.wait_for_timeout(1000)
 
             page.fill('input[placeholder="请输入用户名"]', UPLOAD_ACCOUNT)
@@ -433,7 +439,7 @@ def get_upload_token_and_cookies():
             page.wait_for_url('**/admin/**', timeout=10000)
             page.wait_for_timeout(2000)
 
-            page.goto(f"{WHHNHY_URL}/admin/infra/file/file", timeout=20000, wait_until='domcontentloaded')
+            page.goto(file_page, timeout=20000, wait_until='domcontentloaded')
             page.wait_for_timeout(2000)
 
             access_token_json = page.evaluate('localStorage.getItem("ACCESS_TOKEN")')
@@ -445,7 +451,7 @@ def get_upload_token_and_cookies():
             return access_token, cookie_str
 
         except Exception as e:
-            print(f"❌ 登录数字资产管理平台失败: {e}")
+            print(f"❌ 登录数字资产管理平台({base_url})失败: {e}")
             return None, None
         finally:
             browser.close()
@@ -453,55 +459,80 @@ def get_upload_token_and_cookies():
 
 def upload_screenshot(image_path, access_token=None, cookie_str=None):
     """
-    上传图片到数字资产管理平台，返回永久 URL
+    上传图片到数字资产管理平台（同时上传测试区+生产区）
     image_path: 图片本地路径
-    返回: 永久 URL 或 None
+    返回: 测试区永久 URL（优先），若失败则返回生产区 URL
     """
     if not os.path.exists(image_path):
         print(f"❌ 文件不存在: {image_path}")
         return None
-
-    if not access_token or not cookie_str:
-        print("🔐 正在获取登录态...")
-        access_token, cookie_str = get_upload_token_and_cookies()
-        if not access_token or not cookie_str:
-            return None
 
     with open(image_path, 'rb') as f:
         image_data = f.read()
     filename = os.path.basename(image_path)
     boundary = '----WebKitFormBoundary' + str(uuid.uuid4().int)[:16]
 
-    header = ('--' + boundary + '\r\n'
-               'Content-Disposition: form-data; name="file"; filename="' + filename + '"\r\n'
-               'Content-Type: image/png\r\n'
-               '\r\n').encode()
-    footer = ('\r\n--' + boundary + '--\r\n').encode()
-    body = header + image_data + footer
-
-    req = urllib.request.Request(UPLOAD_API, data=body, method='POST')
-    req.add_header('Cookie', cookie_str)
-    req.add_header('Content-Type', 'multipart/form-data; boundary=' + boundary)
-    req.add_header('Authorization', 'Bearer ' + access_token)
-    req.add_header('User-Agent', 'Mozilla/5.0')
-
-    try:
-        response = urllib.request.urlopen(req, timeout=30)
-        result = response.read().decode()
-        resp_data = json.loads(result)
-        if resp_data.get('code') == 200:
-            permanent_url = resp_data.get('data')
-            return permanent_url
+    def do_upload(upload_api, env_label):
+        """执行上传请求"""
+        if not access_token or not cookie_str:
+            print(f"🔐 正在获取{env_label}登录态...")
+            # 从 API URL 提取 base_url
+            base_url = upload_api.split('/admin-api/')[0]
+            token, cookies = get_upload_token_and_cookies(base_url)
+            if not token or not cookies:
+                return None
         else:
-            print(f"❌ 上传失败: {result}")
+            token, cookies = access_token, cookie_str
+
+        header = ('--' + boundary + '\r\n'
+                   'Content-Disposition: form-data; name="file"; filename="' + filename + '"\r\n'
+                   'Content-Type: image/png\r\n'
+                   '\r\n').encode()
+        footer = ('\r\n--' + boundary + '--\r\n').encode()
+        body = header + image_data + footer
+
+        req = urllib.request.Request(upload_api, data=body, method='POST')
+        req.add_header('Cookie', cookies)
+        req.add_header('Content-Type', 'multipart/form-data; boundary=' + boundary)
+        req.add_header('Authorization', 'Bearer ' + token)
+        req.add_header('User-Agent', 'Mozilla/5.0')
+
+        try:
+            response = urllib.request.urlopen(req, timeout=30)
+            result = response.read().decode()
+            resp_data = json.loads(result)
+            if resp_data.get('code') == 200:
+                return resp_data.get('data')
+            else:
+                print(f"❌ {env_label}上传失败: {result}")
+                return None
+        except urllib.error.HTTPError as e:
+            print(f"❌ {env_label} HTTP错误 {e.code}: {e.read().decode()[:200]}")
+            return None
+        except Exception as e:
+            print(f"❌ {env_label}上传异常: {e}")
             return None
 
-    except urllib.error.HTTPError as e:
-        print(f"❌ HTTP错误 {e.code}: {e.read().decode()[:200]}")
-        return None
-    except Exception as e:
-        print(f"❌ 上传异常: {e}")
-        return None
+    # 同时上传到测试区和生产区
+    print("📤 开始同时上传截图到【测试区+生产区】...")
+    print(f"   截图文件: {image_path}")
+
+    result = {}
+    test_url = do_upload(UPLOAD_TEST_API, "测试区(38868)")
+    prod_url = do_upload(UPLOAD_PROD_API, "生产区(8966)")
+    result["test"] = test_url
+    result["prod"] = prod_url
+
+    if test_url:
+        print(f"   ✅ 测试区成功: {test_url}")
+    else:
+        print(f"   ⚠️ 测试区失败")
+    if prod_url:
+        print(f"   ✅ 生产区成功: {prod_url}")
+    else:
+        print(f"   ⚠️ 生产区失败")
+
+    return result if (test_url or prod_url) else None
 
 
 def get_latest_screenshot():
@@ -570,13 +601,12 @@ def create_bug(title, steps, severity=3, pri=3, assignee="shidawei", module_id=0
         return {"error": str(e), "body": error_body}
 
 
-def build_steps(module_info, bug_desc, steps_text, screenshot_url=None):
+def build_steps(module_info, bug_desc, steps_text, screenshot_urls=None):
     """构建 Bug steps HTML"""
     url = module_info["url"]
     account = module_info["account"]
     password = module_info["password"]
     
-    # 根据模块判断设备和环境
     if "app" in module_info["module"].lower() or "个人" in module_info["module"]:
         device_hint = "iOS模拟器 / Android测试机"
     elif "pad" in module_info["module"].lower():
@@ -584,8 +614,18 @@ def build_steps(module_info, bug_desc, steps_text, screenshot_url=None):
     else:
         device_hint = "Chrome浏览器 / Edge浏览器"
     
-    # 截图 URL
-    screenshot_display = screenshot_url if screenshot_url else "暂无"
+    # 截图 URL（支持 dict{"test":..., "prod":...} 或字符串）
+    if screenshot_urls is None:
+        screenshot_display = "暂无"
+    elif isinstance(screenshot_urls, dict):
+        lines = []
+        if screenshot_urls.get("test"):
+            lines.append(f"测试区: {screenshot_urls['test']}")
+        if screenshot_urls.get("prod"):
+            lines.append(f"生产区: {screenshot_urls['prod']}")
+        screenshot_display = "\n".join(lines) if lines else "暂无"
+    else:
+        screenshot_display = screenshot_urls
     
     steps = f"""<p>【环境】</p><p>- 测试地址：{url}</p><p>- 模块：{module_info['module']}</p><p>- 设备：{device_hint}</p><p>【账号密码】</p><p>- 用户名：{account}</p><p>- 密码：{password}</p><p>【前置条件】</p><p>1. </p><p>【操作步骤】</p><p>{steps_text}</p><p>【期望结果】</p><p>1. </p><p>【实际结果】</p><p>1. {bug_desc}</p><p>【附截图】</p><p>{screenshot_display}</p>"""
     
@@ -620,7 +660,7 @@ def main():
     pri = 3
     test_mode = False
     auto_screenshot = False
-    screenshot_url = None  # 截图永久 URL
+    screenshot_urls = None  # 截图永久 URL dict{"test":..., "prod":...}
     
     args = sys.argv[1:]
     if "--dry-run" in args or "-n" in args:
@@ -646,9 +686,11 @@ def main():
         latest_img = get_latest_screenshot()
         if latest_img:
             print(f"   截图文件: {latest_img}")
-            screenshot_url = upload_screenshot(latest_img)
-            if screenshot_url:
-                print(f"   永久 URL: {screenshot_url}")
+            screenshot_urls = upload_screenshot(latest_img)
+            if screenshot_urls:
+                print(f"   ✅ 截图上传完成")
+                print(f"   测试区: {screenshot_urls.get('test', '失败')}")
+                print(f"   生产区: {screenshot_urls.get('prod', '失败')}")
             else:
                 print("   ⚠️ 截图上传失败，将不添加截图")
         else:
@@ -689,11 +731,7 @@ def main():
             title_prefix = "通用"
     
     title = f"【{title_prefix}】{bug_desc}"
-    steps = build_steps(module_info, bug_desc, "<p>1. </p>", screenshot_url)
-    
-    # 如果有截图，更新 steps 中的"暂无"
-    if screenshot_url:
-        steps = steps.replace("<p>暂无</p>", f"<p>{screenshot_url}</p>")
+    steps = build_steps(module_info, bug_desc, "<p>1. </p>", screenshot_urls)
     
     print("\n🚀 正在提交 Bug...")
     result = create_bug(title, steps, severity, pri, module_info["assignee"], module_info.get("module_id", 0), test_mode=test_mode)

@@ -71,8 +71,11 @@ _你不是聊天机器人。你是测试工程师的专业助手。_
 12. **OpenIM 通知集成**：支持给石大卫(7809497014)、刘偲(1705938371)、张文骏(9175393676) 发送通知，需带 operationID header
 13. **自动创建 Bug**：`auto_bug_creator.py` 从 Excel 自动匹配模块（关键词同义词）、URL、账号、指派人，自动填充 `module_id`（对应 ZenTao 所属模块）；表格数据不完整的模块（个人APP/个人数字空间）有硬编码补充；参考 `zentao-bug-report` Skill
 14. **Skills 联动同步**：更新 Token 或通用知识时，同步更新 SOUL.md + MEMORY.md + 所有关联 Skills
-15. **Bug 截图永久 URL（严格优先）**：`upload_to_whhnhy.py` 脚本上传截图到数字资产管理平台，获得永久 URL `https://www.whhnhy.com:8900/szxc/<hash>.png`；API: `POST https://www.whhnhy.com:8966/admin-api/infra/file/upload`，认证: `Bearer <token>` + cookies；**严禁使用 Serveo URL**（非静态，每次变化）；参考 `zentao-bug-report` Skill 的截图处理章节
-    - ✅ **2026-05-12 实战成功**：上传 `3216604a-af0e-4a05-9b4a-a4a59629fdaa.png` 获得永久 URL，全程自动获取登录态，脚本工作正常
+15. **Bug 截图永久 URL（严格优先）**：`upload_to_whhnhy.py --env both` 同时上传到测试区+生产区，获得两个永久 URL：
+    - 测试区: `https://www.whhnhy.com:29000/szxc/<hash>.png`（后台上传: `https://www.whhnhy.com:38868/admin/infra/file/file`）
+    - 生产区: `https://www.whhnhy.com:8900/szxc/<hash>.png`（后台上传: `https://www.whhnhy.com:8966/admin/infra/file/file`）
+    - **创建 Bug 时截图链接必须同时上传测试区和生产区**；**严禁使用 Serveo URL**（非静态，每次变化）；参考 `zentao-bug-report` Skill
+    - ✅ **2026-05-15 更新**：`auto_bug_creator.py --screenshot` 同时上传测试区(29000)+生产区(8900)，返回两个 URL；steps 中【附截图】写入测试区+生产区两个链接；Bug #9884 实测成功
 16. **Bug 截图公网访问（备选方案）**：仅当数字资产管理平台不可用时使用；用户截图保存到 `bug_screenshots/` 目录，通过端口 8099 的 Flask 服务对外提供访问；截图文件必须用 `ls -lt /root/.openclaw/media/inbound/` 确认最新上传的文件；如防火墙阻断 8099，用 `ssh -R 80:localhost:8099 serveo.net` 临时穿透；在 steps 的【附截图】处填公网 URL 而非"暂无"。⚠️ **Serveo URL 每次重启都变化**（非静态），旧的公网 URL 立即失效。
 
 ### ❌ 踩过的坑

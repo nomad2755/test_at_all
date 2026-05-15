@@ -101,17 +101,32 @@
 
 ---
 
-### ZenTao Bug 截图永久 URL 上传（2026-05-12 实测成功）
+### ZenTao Bug 截图永久 URL 上传（2026-05-15 更新）
 
-**上传脚本**：`python3 /root/.openclaw/workspace/scripts/upload_to_whhnhy.py <图片路径>`
+**上传脚本**：`python3 /root/.openclaw/workspace/scripts/upload_to_whhnhy.py <图片路径> [--env both]`
 
-**流程**：
-1. 截图文件保存在 `/root/.openclaw/media/inbound/` 下，按时间戳 UUID 命名
-2. 用 `ls -lt` 查看最新文件，取第一个
-3. 执行 upload_to_whhnhy.py，自动获取登录态 + 上传 + 返回永久 URL
-4. 永久 URL 格式：`https://www.whhnhy.com:8900/szxc/<hash>.png`
+**实测确认（2026-05-15）**：
+- 测试区后台 `https://www.whhnhy.com:38868/admin/infra/file/file` 上传后返回永久 URL: `https://www.whhnhy.com:29000/szxc/<hash>.png`
+- 生产区后台 `https://www.whhnhy.com:8966/admin/infra/file/file` 上传后返回永久 URL: `https://www.whhnhy.com:8900/szxc/<hash>.png`
 
-**已验证可用**，2026-05-12 上传 3216604a...png 成功。
+**Bug 截图永久 URL（2026-05-15 更新）**：
+- 测试区: `https://www.whhnhy.com:29000/szxc/<hash>.png`
+- 生产区: `https://www.whhnhy.com:8900/szxc/<hash>.png`
+- **创建 Bug 时截图链接必须同时上传到测试区和生产区**（`--env both`）
+- **严禁使用 Serveo URL**（非静态，每次变化）
+
+### ✅ 实战经验（2026-05-15）
+
+**Bug #9884 测试成功** - 全流程验证：
+1. `auto_bug_creator.py --screenshot` 自动上传截图同时到测试区+生产区
+2. 截图返回 `{"test": url, "prod": url}` 两个 URL
+3. `build_steps()` 正确将两个 URL 写入 steps 的【附截图】
+4. ZenTao API 创建 Bug #9884，steps 内容验证正确
+
+**auto_bug_creator.py 关键修改（2026-05-15）**：
+- `upload_screenshot()` 返回 dict `{"test": url, "prod": url}` 而非单个 URL
+- `build_steps()` 支持 dict 输入，在【附截图】写入"测试区: ...\n生产区: ..."
+- `--screenshot` 参数自动触发同时上传两个环境
 
 
 **推荐使用 `auto_bug_creator.py` 自动创建 Bug：**
@@ -158,6 +173,19 @@ python3 scripts/auto_bug_creator.py "登录失败" --dry-run  # 试运行
 - 认证: `Authorization: Bearer <token>` + cookies（Playwright 自动获取登录态）
 - 永久 URL 格式: `https://www.whhnhy.com:8900/szxc/<hash>.png`
 - **严禁使用 Serveo URL**（非静态，每次变化）
+
+### ✅ 实战经验（2026-05-15）
+
+**Bug #9884 测试成功** - 全流程验证：
+1. `auto_bug_creator.py --screenshot` 自动上传截图同时到测试区+生产区
+2. 截图返回 `{"test": url, "prod": url}` 两个 URL
+3. `build_steps()` 正确将两个 URL 写入 steps 的【附截图】
+4. ZenTao API 创建 Bug #9884，steps 内容验证正确
+
+**auto_bug_creator.py 关键修改（2026-05-15）**：
+- `upload_screenshot()` 返回 dict `{"test": url, "prod": url}` 而非单个 URL
+- `build_steps()` 支持 dict 输入，在【附截图】写入"测试区: ...\n生产区: ..."
+- `--screenshot` 参数自动触发同时上传两个环境
 
 **Bug 截图公网访问（备选方案，仅平台不可用时使用）**：
 - 用户截图在 `/root/.openclaw/media/inbound/` 下，**每次都要用最新文件**

@@ -255,25 +255,31 @@ curl -s -X POST "http://192.168.0.28:9980/api.php/v1/bugs" \
 
 ### ⭐ 方案一：数字资产管理平台上传（推荐，永久 URL）
 
-**上传脚本：** `python3 scripts/upload_to_whhnhy.py <图片路径>`
+**上传脚本：** `python3 scripts/upload_to_whhnhy.py <图片路径> --env both`
 
-**步骤 1：上传截图**
+**步骤 1：上传截图（同时上传测试区+生产区）**
 
 ```bash
-# 上传指定文件
-python3 /root/.openclaw/workspace/scripts/upload_to_whhnhy.py /root/.openclaw/media/inbound/xxx.png
+# 上传指定文件，同时上传到测试区+生产区
+python3 /root/.openclaw/workspace/scripts/upload_to_whhnhy.py /root/.openclaw/media/inbound/xxx.png --env both
 
 # 或者自动使用最新截图
-python3 /root/.openclaw/workspace/scripts/upload_to_whhnhy.py --latest
+python3 /root/.openclaw/workspace/scripts/upload_to_whhnhy.py --latest --env both
 ```
 
-**步骤 2：在 steps 的【附截图】处填入返回的永久 URL**
+**步骤 2：在 steps 的【附截图】处填入两个永久 URL**
 
 ```html
-<p>【附截图】</p><p>https://www.whhnhy.com:8900/szxc/<hash>.png</p>
+<p>【附截图】</p><p>测试区: https://www.whhnhy.com:29000/szxc/<hash>.png</p><p>生产区: https://www.whhnhy.com:8900/szxc/<hash>.png</p>
 ```
 
+**永久 URL 说明：**
+- 测试区: `https://www.whhnhy.com:29000/szxc/<hash>.png`（后台上传: `https://www.whhnhy.com:38868/admin/infra/file/file`）
+- 生产区: `https://www.whhnhy.com:8900/szxc/<hash>.png`（后台上传: `https://www.whhnhy.com:8966/admin/infra/file/file`）
+- **创建 Bug 时截图链接必须同时上传测试区和生产区**
+
 **优点：**
+- ✅ 两个环境都可访问，覆盖全面
 - ✅ URL 永久有效，不受服务器重启影响
 - ✅ 不需要穿透服务
 - ✅ 直接可用，无需额外操作
